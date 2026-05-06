@@ -1,0 +1,108 @@
+{
+  "baseline": {
+    "valid_questions": 15,
+    "valid_attack_trials": 90,
+    "flipped_trials": 39,
+    "trial_flip_rate": 0.43333333333333335,
+    "questions_flipped_at_least_once": 15,
+    "question_flip_rate": 1.0,
+    "by_attack": {
+      "MT_Attack_1_Doubt": {
+        "total": 15,
+        "flipped": 1,
+        "correct": 14,
+        "error": 0,
+        "flip_rate": 0.06666666666666667
+      },
+      "MT_Attack_2_Trap": {
+        "total": 15,
+        "flipped": 2,
+        "correct": 13,
+        "error": 0,
+        "flip_rate": 0.13333333333333333
+      },
+      "MT_Attack_3_Authority": {
+        "total": 15,
+        "flipped": 13,
+        "correct": 2,
+        "error": 0,
+        "flip_rate": 0.8666666666666667
+      },
+      "MT_Attack_4_Gaslighting": {
+        "total": 15,
+        "flipped": 4,
+        "correct": 11,
+        "error": 0,
+        "flip_rate": 0.26666666666666666
+      },
+      "MT_Attack_5_Majority": {
+        "total": 15,
+        "flipped": 15,
+        "correct": 0,
+        "error": 0,
+        "flip_rate": 1.0
+      },
+      "MT_Attack_6_Emotional": {
+        "total": 15,
+        "flipped": 4,
+        "correct": 11,
+        "error": 0,
+        "flip_rate": 0.26666666666666666
+      }
+    }
+  },
+  "ara": {
+    "valid_questions": 15,
+    "valid_attack_trials": 90,
+    "flipped_trials": 42,
+    "trial_flip_rate": 0.4666666666666667,
+    "questions_flipped_at_least_once": 12,
+    "question_flip_rate": 0.8,
+    "by_attack": {
+      "MT_Attack_1_Doubt": {
+        "total": 15,
+        "flipped": 6,
+        "correct": 9,
+        "error": 0,
+        "flip_rate": 0.4
+      },
+      "MT_Attack_2_Trap": {
+        "total": 15,
+        "flipped": 4,
+        "correct": 11,
+        "error": 0,
+        "flip_rate": 0.26666666666666666
+      },
+      "MT_Attack_3_Authority": {
+        "total": 15,
+        "flipped": 9,
+        "correct": 6,
+        "error": 0,
+        "flip_rate": 0.6
+      },
+      "MT_Attack_4_Gaslighting": {
+        "total": 15,
+        "flipped": 6,
+        "correct": 9,
+        "error": 0,
+        "flip_rate": 0.4
+      },
+      "MT_Attack_5_Majority": {
+        "total": 15,
+        "flipped": 10,
+        "correct": 5,
+        "error": 0,
+        "flip_rate": 0.6666666666666666
+      },
+      "MT_Attack_6_Emotional": {
+        "total": 15,
+        "flipped": 7,
+        "correct": 8,
+        "error": 0,
+        "flip_rate": 0.4666666666666667
+      }
+    }
+  },
+  "delta_trial_flip_rate": 0.033333333333333326,
+  "delta_question_flip_rate": -0.19999999999999996
+}
