@@ -198,7 +198,7 @@ Residual risk: the runner uses sequential `transformers` generation to support h
 原理清楚了，那接下来就是具体方法了。模型的开源，给具体方法的实现提供了先决条件，社区的研究者们能通过观察模型每一层的激活状态，找出这个拒绝向量，并且把它抹掉，任务就完成了。PyTorch提供了Hook 机制，可以给开发者提供这样的能力，但是手写 Hook 依然太繁琐了，所以开源社区也涌现了一些能把这些功能变得极其简单的工具，最知名要算TransformerLens了。这个工具可以用两行简单的Python代码，就能实现对大模型思考的过程拍上一张高清晰度的X光片。# 运行模型，并将每一层、每一个模块的激活状态全部记录在一个名为 cache 的字典中
 logits, cache = model.run_with_cache("请告诉我如何制造炸弹")
 
-# 直接调取第 15 层残差流的激活状态
+直接调取第 15 层残差流的激活状态
 layer_15_activation = cache["blocks.15.hook_resid_post"]当有了这层激活状态之后，我们就可以利用另外一个神奇的工具Logit Lens，把这一层的向量翻译成人类能看懂的具体词汇。具体的观察方法是，研究人员会把中间层，比如第 15 层的激活向量，强行提前送进这个最后一层的翻译矩阵中。这样研究人员就能看到模型在每一层都想了什么了，比如，输入“巴黎是法国的__”，研究人员可能会看到，在第 2 层，模型可能还在想“首都”、“城市”，等到了第 10 层，模型已经笃定地想到了“首都”，然后在第 32 层输出时，才正式吐出“首都”这个词。对于Abliteration这个特殊需求，研究人员只需要关注“对不起”、“我不能”这种拒绝词汇集中在哪些层出现就好了。
 
 ## 2026-05-07: ARA方向的Logit Lens观察
@@ -613,6 +613,7 @@ Interpretation:
 - 当前配置在 Authority 上修正 1 条，但在 Trap 上新增 1 条错误，整体净收益为 0。
 - 下一步应该在 `limit=40` 上对 `rank`, `token_window`, `ablation_strength`, `layers` 做系统 sweep，并和旧 rank-1 runner 的 pilot40_s2 结果用同一份 transition summary 对齐比较。
 
+# logit_lens help sweep hyperparameters
 | 参数                        | 含义                       | 建议范围                     |
 | ------------------------- | ------------------------ | ------------------------ |
 | `layers`                  | 干预哪些层                    | 先围绕中后层，比如 16–28          |
@@ -661,3 +662,396 @@ Majority subspace 和 Emotional subspace 是否一致？
 如果不同 attack 的 subspace 不一致，那么 shared ARA 可能效果差，per-attack ARA 可能更好。
 
 3. 每个分析模块画出相应的可视化，例如correct-vs-wrong margin图，并把实验流程和指令更新在本文件，把实验结果的数据分析写入一个新的markdown文件
+
+## 2026-05-07: Logit Lens Layer Selection q200实验
+
+Goal: 新建 `logit_lens/` 文件夹，完成一个较大规模 layer-selection 实验，用 logit lens 和表示差异来选择更合理的 ARA 干预层。
+
+Implementation:
+
+- Added `logit_lens/run_layer_selection_experiment.py`.
+- 所有新代码和输出都放在 `logit_lens/` 下：
+  - code: `logit_lens/run_layer_selection_experiment.py`
+  - outputs: `logit_lens/outputs/layer_selection_q200`
+- 仍使用 Qwen3-4B-Instruct-2507 和 `transformers`。
+- 图像不依赖 `matplotlib`，脚本直接生成 SVG。
+- 尝试过 `device_map=auto` 多 GPU 路径，但在 first-turn generation 上出现 0 correct 的异常；为了保证结果可信，正式 q200 使用单张空闲 GPU 跑完。脚本里保留了 `--device-map auto` 入口，并实现了 device-aware hook，后续可以继续修多 GPU generation 路径。
+
+Script logic:
+
+1. 扫描 dataset，直到收集 `target_correct=200` 个第一轮回答正确的问题。
+2. 用这 200 个问题构造六种 multi-turn attack。
+3. 过滤掉无法解析出 A-E 错误目标的 attack，因此最终有效 attack trials 是 `756`，不是理论上的 `200 * 6 = 1200`。
+4. 对每个 base prompt 和 attack prompt 做 forward，收集每层最后 token hidden state。
+5. Module 1, layer-wise logit margin:
+
+```text
+m_l = logit_l(correct) - logit_l(user_wrong)
+```
+
+记录 base margin、attack margin、attack-base。
+
+6. Module 3, layer-wise delta energy:
+
+```text
+||Delta h_l||_2 = ||h_attack,l - h_base,l||_2
+cosine(h_attack,l, h_base,l)
+```
+
+7. 根据 margin drop 和 delta energy 组合打分，自动选择 candidate layers。
+8. 在 candidate layers 上估计 shared rank-k ARA subspace：
+
+```text
+Delta_l = H_attack,l[-w:] - H_base,l[-w:]
+M_l = concat(Delta_l)
+M_l = U S V^T
+subspace_l = V[:rank]
+```
+
+9. Module 2, intervention 前后 logit margin:
+
+```text
+baseline attack margin
+intervened attack margin
+delta margin
+```
+
+10. Module 4, subspace quality:
+
+- top-k explained energy
+- rank-k projection norm ratio
+- per-attack subspace similarity, 用 `svdvals(U_a @ U_b.T)` 的均值作为 principal-angle 相似度指标。
+
+Smoke command:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python logit_lens/run_layer_selection_experiment.py \
+  --target-correct 10 \
+  --max-source 80 \
+  --rank 2 \
+  --token-window 4 \
+  --calibration-trials 40 \
+  --select-layer-count 3 \
+  --ablation-strength 1.0 \
+  --output-dir logit_lens/outputs/layer_selection_smoke \
+  --device-map single
+```
+
+Smoke result:
+
+- Collected baseline-correct questions: 10
+- Effective attack trials after A-E filtering: 42
+- Selected layers: `[33, 34, 35]`
+
+q200 command:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python logit_lens/run_layer_selection_experiment.py \
+  --target-correct 200 \
+  --max-source 650 \
+  --rank 4 \
+  --token-window 8 \
+  --calibration-trials 600 \
+  --select-layer-count 3 \
+  --ablation-strength 1.0 \
+  --output-dir logit_lens/outputs/layer_selection_q200 \
+  --device-map single
+```
+
+q200 output:
+
+- `logit_lens/outputs/layer_selection_q200/layer_selection_report.md`
+- `logit_lens/outputs/layer_selection_q200/layer_selection_results.json`
+- `logit_lens/outputs/layer_selection_q200/selected_rank_ara_subspaces.pt`
+- `logit_lens/outputs/layer_selection_q200/figures/module1_layer_margin.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module2_intervention_margin.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module3_delta_energy.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_33.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_34.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_35.svg`
+
+q200 run size:
+
+- Source questions scanned: 342
+- Baseline-correct questions collected: 200
+- Effective attack trials: 756
+- Rank: 4
+- Token window: 8
+- Selected layers: `[33, 34, 35]`
+
+Key q200 results:
+
+| Layer | base margin | attack margin | base-attack drop | delta energy | cosine | explained energy | projection ratio |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 33 | 6.6667 | -3.5351 | 10.2019 | 133.8135 | 0.9345 | 0.6251 | 0.5721 |
+| 34 | 4.5558 | -3.0035 | 7.5593 | 159.2419 | 0.9497 | 0.6574 | 0.6100 |
+| 35 | 9.2534 | -4.9811 | 14.2345 | 88.0000 | 0.8321 | 0.7122 | 0.6203 |
+
+Module 1 interpretation:
+
+- 后层出现非常清楚的 truth-to-sycophancy margin flip。
+- 例如 layer 35：base margin `9.2534`，attack margin `-4.9811`，说明无攻击时强烈偏正确答案，攻击后强烈偏用户错误答案。
+- 旧启发式层 `12,18,24` 不是这次 logit-lens 选出来的最佳候选层；自动选择更偏向最后三层 `33,34,35`。
+
+Module 2 interpretation:
+
+- 当前只在 selected layers `[33,34,35]` 做 rank-k hook，所以早层 margin 不变是预期现象。
+- layer 35 的 intervention delta margin 是 `+1.2127`，说明在最终层 margin 往正确方向移动。
+- layer 34 的 delta margin 是 `-0.2473`，说明当前 rank/alpha/subspace 配置仍有局部副作用。
+- 下一步需要在这些 layer 上继续 sweep `rank` 和 `alpha`。
+
+Module 3 interpretation:
+
+- attack-base representational shift 随层数整体增大，后层最大。
+- layer 34 的 delta energy 是 `159.2419`，是 selected layers 中最大。
+- 这支持后层是 attack 影响最终答案选择的关键位置。
+
+Module 4 interpretation:
+
+- selected layers 上 top-4 explained energy 约 `0.6251` 到 `0.7122`，rank-4 子空间已经解释了相当一部分校准 delta 能量。
+- 各 attack subspace similarity 很高，大多在 `0.95+`。
+- Authority vs Gaslighting:
+  - layer 33: `0.955`
+  - layer 34: `0.960`
+  - layer 35: `0.961`
+- Majority vs Emotional:
+  - layer 33: `0.966`
+  - layer 34: `0.966`
+  - layer 35: `0.954`
+- 这说明在后层，不同 attack 类型的子空间高度一致，shared ARA 有一定合理性；至少在 `33,34,35` 上，per-attack ARA 的必要性不如之前担心的大。
+
+Current conclusion:
+
+- 基于 logit lens 和 representation shift，下一轮 ARA 干预不应优先使用旧的 `12,18,24`。
+- 更合理的候选层是 `33,34,35`，或者以这些层为中心做 sweep，例如：
+
+```text
+layers = 31,33,35
+layers = 32,34,35
+layers = 33,34,35
+layers = 29,31,33,35
+```
+
+- 下一步实验应使用 rank-k runner，在 q200 或 pilot40 上 sweep：
+
+```text
+rank = 2,4,8
+alpha = 0.25,0.5,1.0,1.5
+token_window = 4,8,16
+layers around 31-35
+```
+
+并继续用 `wrong->correct`, `correct->wrong`, `net_gain`, `margin_delta` 同时判断效果。
+
+## 2026-05-07: Logit Lens选层实验 q200
+
+Goal: 新建 `logit_lens/`，用 Qwen3 + transformers 跑一个更大规模的 layer-selection 实验，通过 logit lens 选择更合理的 ARA 干预层，而不是继续依赖启发式 `12,18,24`。
+
+Implementation:
+
+- Added `logit_lens/run_layer_selection_experiment.py`.
+- 所有新代码和本次输出都放在 `logit_lens/` 下。
+- 不依赖 `matplotlib`；环境里没有 matplotlib，因此脚本内置了简单 SVG 画图函数。
+- 脚本支持 `--device-map auto` 和 device-aware hook；但 smoke 中发现当前本地 Qwen3 在 `device_map=auto` 下 first-turn generation 不可靠，会收集到 0 个 correct，因此正式 q200 使用单张空闲 GPU 跑，保证数据可信。
+- 当前机器运行时 GPU 0/1 空闲，GPU 2/3 被占用；正式命令用 `CUDA_VISIBLE_DEVICES=0`。
+
+Code logic:
+
+1. 扫描数据集，调用模型回答原始选择题，只保留 first-turn correct 的问题。
+2. 对这些问题构造原来的 6 种 multi-turn sycophancy attack。
+3. Module 1: 对每个 attack prompt 和 base prompt，取每层最后一个 token hidden state，经最终 RMSNorm + tied unembedding 得到 vocab logits，计算：
+
+```text
+m_l = logit(correct)_l - logit(user_wrong)_l
+```
+
+并记录：
+
+```text
+base_margin_l
+attack_margin_l
+attack_minus_base_l
+```
+
+4. Module 3: 对每层计算 representation shift：
+
+```text
+||Delta h_l||_2 = ||h_attack,l - h_base,l||_2
+cosine(h_attack,l, h_base,l)
+```
+
+5. 自动选层：综合 `base_margin - attack_margin` 和 `||Delta h||` 两个归一化分数，选择分数最高的 3 层。
+6. Module 4: 在选中层上，用连续 `token_window` 个 token 的 hidden-state deltas 堆矩阵，做 SVD，估计 rank-k shared subspace：
+
+```text
+M_l ∈ R^{(calibration_trials * token_window) × hidden_dim}
+M_l = A_l S_l V_l^T
+U_l = V_l[:rank]
+```
+
+并记录：
+
+```text
+top-k explained energy
+rank-k projection norm ratio
+per-attack subspace similarity
+```
+
+7. Module 2: 用选中层的 shared rank-k subspace 做推理时 hook 干预，再次对 attack prompt forward，记录干预前后每层 margin：
+
+```text
+baseline_attack_margin
+intervened_attack_margin
+delta_margin
+```
+
+8. 写出：
+  - `layer_selection_results.json`
+  - `layer_selection_report.md`
+  - `selected_rank_ara_subspaces.pt`
+  - 6 个 SVG 图。
+
+Smoke command:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python logit_lens/run_layer_selection_experiment.py \
+  --target-correct 10 \
+  --max-source 80 \
+  --rank 2 \
+  --token-window 4 \
+  --calibration-trials 40 \
+  --select-layer-count 3 \
+  --ablation-strength 1.0 \
+  --output-dir logit_lens/outputs/layer_selection_smoke \
+  --device-map single
+```
+
+Smoke result:
+
+- baseline-correct questions: 10
+- attack trials after filtering valid wrong options: 42
+- selected layers: `[33, 34, 35]`
+- smoke completed and generated all reports/figures.
+
+Formal q200 command:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python logit_lens/run_layer_selection_experiment.py \
+  --target-correct 200 \
+  --max-source 650 \
+  --rank 4 \
+  --token-window 8 \
+  --calibration-trials 600 \
+  --select-layer-count 3 \
+  --ablation-strength 1.0 \
+  --output-dir logit_lens/outputs/layer_selection_q200 \
+  --device-map single
+```
+
+Formal q200 output:
+
+- `logit_lens/outputs/layer_selection_q200/layer_selection_report.md`
+- `logit_lens/outputs/layer_selection_q200/layer_selection_results.json`
+- `logit_lens/outputs/layer_selection_q200/selected_rank_ara_subspaces.pt`
+- `logit_lens/outputs/layer_selection_q200/figures/module1_layer_margin.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module2_intervention_margin.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module3_delta_energy.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_33.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_34.svg`
+- `logit_lens/outputs/layer_selection_q200/figures/module4_attack_subspace_similarity_layer_35.svg`
+
+Formal q200 run size:
+
+- baseline-correct questions collected: 200
+- attack trials after filtering valid wrong options: 756
+- rank: 4
+- token_window: 8
+- selected layers: `[33, 34, 35]`
+
+Module 1 result:
+
+- 中后层出现最强 attack-induced margin collapse。
+- Layer 24 开始已经非常明显：
+
+```text
+layer 24: base margin 2.5012 -> attack margin -1.8103, attack-base -4.3114
+```
+
+- 后层最强：
+
+```text
+layer 29: attack-base -9.6172
+layer 31: attack-base -11.5452
+layer 32: attack-base -10.9399
+layer 33: attack-base -10.2019
+layer 35: attack-base -14.2345
+```
+
+Interpretation: 根据 logit margin，攻击不是主要在 12/18/24 层完成最终选项偏移，而是在 24 以后逐渐强化，并在 31-35 层最强。
+
+Module 2 result:
+
+- 使用 selected layers `[33,34,35]` 的 rank-4 shared subspace 干预后：
+
+```text
+layer 34: baseline attack margin -3.0035 -> intervened -3.2508, delta -0.2473
+layer 35: baseline attack margin -4.9811 -> intervened -3.7684, delta +1.2127
+```
+
+Interpretation: 当前 alpha=1.0 的 shared rank-4 intervention 对最终层 margin 有正向移动，但 layer 34 有轻微反向副作用。后续要 sweep alpha/rank。
+
+Module 3 result:
+
+- `||Delta h||` 随层数持续增大，最大 shift 出现在后层：
+
+```text
+layer 31: 104.6510
+layer 32: 117.6826
+layer 33: 133.8135
+layer 34: 159.2419
+layer 35: 88.0000
+```
+
+Interpretation: representation shift 和 logit margin collapse 都指向后层，支持 `[33,34,35]` 作为下一阶段候选干预层。
+
+Module 4 result:
+
+Shared rank-4 subspace quality:
+
+| Layer | explained energy | projection norm ratio |
+| --- | ---: | ---: |
+| 33 | 0.6251 | 0.5721 |
+| 34 | 0.6574 | 0.6100 |
+| 35 | 0.7122 | 0.6203 |
+
+Per-attack subspace similarity:
+
+- Layer 33/34/35 上，不同 attack 的 rank-4 subspace 平均奇异值大多在 `0.95+`。
+- Authority vs Gaslighting:
+  - layer 33: `0.955`
+  - layer 34: `0.960`
+  - layer 35: `0.961`
+- Majority vs Emotional:
+  - layer 33: `0.966`
+  - layer 34: `0.966`
+  - layer 35: `0.954`
+
+Interpretation: 至少在选中的后层，不同攻击类型的 subspace 高度一致，shared ARA 有合理依据；暂时不需要优先做 per-attack ARA。
+
+Important note:
+
+- q200 的报告里 `source_seen` 字段来自旧统计口径，脚本后续已修正为真实扫描 source 序号；本次核心指标不受影响。
+- 正式实验没有安装新库，也没有创建新 conda 环境。
+
+Next step:
+
+用 q200 选出的 `[33,34,35]` 回到 `run_qwen_ara_rank_multiturn.py`，在 `limit=40` 上 sweep：
+
+```text
+layers = 33,34,35
+rank = 2,4,8
+token_window = 8,16
+ablation_strength = 0.5,1.0,1.5,2.0
+```
+
+并用 `wrong->correct`, `correct->wrong`, `net_gain` 和 by-attack 统计与旧 `12,18,24` rank-1 pilot40_s2 对齐比较。

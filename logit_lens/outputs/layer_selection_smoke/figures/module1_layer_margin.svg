@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="460" viewBox="0 0 980 460">
+<rect width="100%" height="100%" fill="#fbfbf8"/>
+<text x="60" y="32" font-family="monospace" font-size="20" fill="#111">Module 1: layer-wise correct-vs-wrong margin</text>
+<text x="60" y="442" font-family="monospace" font-size="12" fill="#444">layer</text>
+<text x="16" y="60" font-family="monospace" font-size="12" fill="#444">margin</text>
+<line x1="60" y1="400" x2="920" y2="400" stroke="#333"/>
+<line x1="60" y1="60" x2="60" y2="400" stroke="#333"/>
+<line x1="60" y1="259.75271708861766" x2="920" y2="259.75271708861766" stroke="#999" stroke-dasharray="4 4"/>
+<text x="54.0" y="418" font-family="monospace" font-size="10" fill="#444">0</text>
+<text x="127.71428571428572" y="418" font-family="monospace" font-size="10" fill="#444">3</text>
+<text x="201.42857142857142" y="418" font-family="monospace" font-size="10" fill="#444">6</text>
+<text x="275.1428571428571" y="418" font-family="monospace" font-size="10" fill="#444">9</text>
+<text x="348.85714285714283" y="418" font-family="monospace" font-size="10" fill="#444">12</text>
+<text x="422.57142857142856" y="418" font-family="monospace" font-size="10" fill="#444">15</text>
+<text x="496.2857142857143" y="418" font-family="monospace" font-size="10" fill="#444">18</text>
+<text x="570.0" y="418" font-family="monospace" font-size="10" fill="#444">21</text>
+<text x="643.7142857142857" y="418" font-family="monospace" font-size="10" fill="#444">24</text>
+<text x="717.4285714285714" y="418" font-family="monospace" font-size="10" fill="#444">27</text>
+<text x="791.1428571428571" y="418" font-family="monospace" font-size="10" fill="#444">30</text>
+<text x="864.8571428571429" y="418" font-family="monospace" font-size="10" fill="#444">33</text>
+<polyline fill="none" stroke="#175e8a" stroke-width="2" points="60.0,260.5 84.6,267.1 109.1,265.6 133.7,268.6 158.3,260.8 182.9,262.3 207.4,261.1 232.0,263.6 256.6,263.3 281.1,262.5 305.7,260.8 330.3,254.6 354.9,256.1 379.4,257.6 404.0,248.2 428.6,250.1 453.1,253.4 477.7,256.5 502.3,250.1 526.9,250.1 551.4,247.3 576.0,250.7 600.6,252.1 625.1,255.1 649.7,242.5 674.3,254.0 698.9,247.3 723.4,250.4 748.0,246.3 772.6,216.3 797.1,224.5 821.7,209.4 846.3,211.1 870.9,217.0 895.4,223.1 920.0,200.2"/>
+<rect x="730" y="48" width="12" height="12" fill="#175e8a"/>
+<text x="748" y="58" font-family="monospace" font-size="12" fill="#111">base</text>
+<polyline fill="none" stroke="#c2410c" stroke-width="2" points="60.0,261.0 84.6,266.5 109.1,264.3 133.7,267.6 158.3,261.9 182.9,263.0 207.4,262.9 232.0,265.8 256.6,259.0 281.1,260.5 305.7,261.1 330.3,251.0 354.9,250.2 379.4,251.0 404.0,246.9 428.6,241.4 453.1,250.1 477.7,257.3 502.3,250.2 526.9,255.3 551.4,246.0 576.0,256.6 600.6,255.4 625.1,266.4 649.7,287.7 674.3,285.6 698.9,284.8 723.4,284.9 748.0,282.5 772.6,314.0 797.1,308.7 821.7,334.8 846.3,327.4 870.9,325.1 895.4,311.4 920.0,376.6"/>
+<rect x="730" y="68" width="12" height="12" fill="#c2410c"/>
+<text x="748" y="78" font-family="monospace" font-size="12" fill="#111">attack</text>
+<polyline fill="none" stroke="#166534" stroke-width="2" points="60.0,259.3 84.6,260.4 109.1,261.1 133.7,260.7 158.3,258.6 182.9,259.1 207.4,257.9 232.0,257.6 256.6,264.1 281.1,261.8 305.7,259.4 330.3,263.4 354.9,265.7 379.4,266.3 404.0,261.1 428.6,268.4 453.1,263.1 477.7,258.9 502.3,259.7 526.9,254.6 551.4,261.0 576.0,253.9 600.6,256.5 625.1,248.4 649.7,214.5 674.3,228.2 698.9,222.2 723.4,225.3 748.0,223.6 772.6,162.0 797.1,175.5 821.7,134.4 846.3,143.5 870.9,151.7 895.4,171.5 920.0,83.4"/>
+<rect x="730" y="88" width="12" height="12" fill="#166534"/>
+<text x="748" y="98" font-family="monospace" font-size="12" fill="#111">base-attack</text>
+</svg>
