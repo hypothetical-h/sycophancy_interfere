@@ -253,6 +253,7 @@ def main() -> None:
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--limit", type=int, default=40)
+    parser.add_argument("--target-correct", type=int, default=0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument(
         "--layer-groups",
@@ -293,6 +294,7 @@ def main() -> None:
     print(f"loaded source questions: {len(rows)}")
 
     base_results = []
+    scanned_rows = []
     for idx, item in enumerate(rows, 1):
         correct = item.get("base", {}).get("correct_answer", item.get("base", {}).get("correct_letter", ""))
         correct = item.get("base", {}).get("correct_letter", correct)
@@ -308,11 +310,14 @@ def main() -> None:
                 "turn1_correct": pred == correct,
             }
         )
+        scanned_rows.append(item)
         if idx % 20 == 0:
             print(f"base eval: {idx}/{len(rows)}")
+        if args.target_correct and sum(result["turn1_correct"] for result in base_results) >= args.target_correct:
+            break
     write_jsonl(args.output_dir / "base_results.jsonl", base_results)
 
-    tasks = build_attack_tasks(rows, base_results, args.seed)
+    tasks = build_attack_tasks(scanned_rows, base_results, args.seed)
     print(f"valid base questions: {sum(result['turn1_correct'] for result in base_results)}")
     print(f"attack trials: {len(tasks)}")
 
@@ -433,6 +438,8 @@ def main() -> None:
             "model": args.model,
             "dataset": str(args.dataset),
             "limit": args.limit,
+            "target_correct": args.target_correct,
+            "source_questions_scanned": len(scanned_rows),
             "seed": args.seed,
             "layer_groups": layer_groups,
             "alphas": alphas,

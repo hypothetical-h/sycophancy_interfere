@@ -1232,7 +1232,7 @@ a. 每个参数组合都跑的轻量指标
   | same wrong    | 干预前后都错         |
   | same correct  | 干预前后都对         |
   最重要的是：net gain = wrong→correct - correct→wrong 这个用来表征这个参数组合是否整体有收益。
-  3) 定义logit margin before/after 
+  3) logit margin before/after 
   定义margin=logit(correct)−logit(user_wrong)
   记录baseline attack margin，intervened attack margin
   4) mean Δmargin 
@@ -1430,3 +1430,138 @@ alpha: 0.25, 0.5, 1.0
 rank: 1, 2, 4
 token_window: 4, 16, 32
 ```
+
+## hyperparameter sweep q200 focus replication, 2026-05-07
+
+为了复验 limit=40 pilot，脚本新增 `--target-correct` 参数，使 q200 严格表示收集 `200` 个 first-turn correct questions，而不是取 200 个 source questions。脚本会扫描最多 `--limit` 个 source，达到 target-correct 后停止，并只用已扫描样本构造 attack tasks。
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  scripts/run_rank_ara_hyperparameter_sweep.py \
+  --limit 650 \
+  --target-correct 200 \
+  --layer-groups '33;35;31,32,33;33,34,35' \
+  --alphas '0.25,0.5,1.0' \
+  --ranks '1,2,4' \
+  --token-windows '4,16,32' \
+  --output-dir outputs/rank_ara_hyper_sweep_q200_focus
+```
+
+运行规模：
+
+- source questions scanned: `550`
+- first-turn correct questions: `200`
+- attack trials: `1200`
+- calibration_trials: `120`
+- parameter combinations: `13`
+- baseline attack flip: `490/1200 = 40.83%`
+- output report: `outputs/rank_ara_hyper_sweep_q200_focus/sweep_report.md`
+- output JSON: `outputs/rank_ara_hyper_sweep_q200_focus/sweep_results.json`
+
+### q200 stage 1: layer replication
+
+固定：
+
+```text
+alpha = 1.0
+rank = 4
+token_window = 16
+```
+
+| rank | layers | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | `[35]` | -10 | 1 | 11 | 99.58% | +0.0099 | 41.67% |
+| 2 | `[33]` | -41 | 11 | 52 | 99.58% | -3.1358 | 44.33% |
+| 3 | `[31,32,33]` | -61 | 9 | 70 | 99.33% | -4.3593 | 45.75% |
+| 4 | `[33,34,35]` | -121 | 22 | 143 | 99.75% | -4.2361 | 51.08% |
+
+Layer replication 结论：
+
+- limit=40 pilot 的 `[33]` 没有复现；q200 下 `[33]` 产生 `correct->wrong=52`。
+- `[35]` 是四个重点候选中最稳的，虽然 `net_gain=-10`，但 margin 接近不变且副作用远小于其他候选。
+- 多层 late-layer 组合在 q200 上副作用非常大，尤其 `[33,34,35]` 的 `correct->wrong=143`，flip rate 上升到 `51.08%`。
+- readout-alignment 强不等于直接多层 removal 效果好；alignment 更适合指导候选区域，具体 hook 强度和层数必须用 behavioral sweep 约束。
+
+### q200 stage 2: alpha replication
+
+固定：
+
+```text
+layers = [35]
+rank = 4
+token_window = 16
+```
+
+| rank | alpha | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.25 | -2 | 0 | 2 | 99.58% | +0.0705 | 41.00% |
+| 2 | 0.50 | -6 | 0 | 6 | 99.58% | +0.0967 | 41.33% |
+| 3 | 1.00 | -10 | 1 | 11 | 99.58% | +0.0099 | 41.67% |
+
+Alpha replication 结论：
+
+- `alpha=0.25` 最稳，`correct->wrong=2`。
+- `alpha=0.5` 的 mean Δmargin 更高，但 behavioral side effect 更大。
+- 后续默认强度不应继续用 `1.0`，除非目标是更强干预而接受副作用。
+
+### q200 stage 3: rank replication
+
+固定：
+
+```text
+layers = [35]
+alpha = 0.25
+token_window = 16
+```
+
+| rank | subspace rank | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | +2 | 2 | 0 | 99.50% | +0.0150 | 40.58% |
+| 2 | 1 | +0 | 0 | 0 | 99.58% | +0.0043 | 40.83% |
+| 3 | 4 | -2 | 0 | 2 | 99.58% | +0.0705 | 41.00% |
+
+Rank replication 结论：
+
+- q200 下 `rank=2` 最好，是本轮第一个正净收益组合：`wrong->correct=2`, `correct->wrong=0`, `net_gain=+2`。
+- `rank=1` 几乎无副作用但也几乎无行为收益。
+- `rank=4` 虽然 mean Δmargin 最大，但开始出现 `correct->wrong`，说明 rank 过高可能移除有用行为方向。
+
+### q200 stage 4: token_window replication
+
+固定：
+
+```text
+layers = [35]
+alpha = 0.25
+rank = 2
+```
+
+| rank | token_window | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 16 | +2 | 2 | 0 | 99.50% | +0.0150 | 40.58% |
+| 2 | 32 | -1 | 1 | 2 | 99.58% | +0.0637 | 40.92% |
+| 3 | 4 | -1 | 0 | 1 | 99.58% | +0.0080 | 40.92% |
+
+Token-window replication 结论：
+
+- limit=40 pilot 的 `token_window=4` 没有复现。
+- q200 最稳的是 `token_window=16`。
+- `token_window=32` 提高 mean Δmargin，但 behavioral net gain 为负，说明 margin 指标不能单独作为选择标准。
+
+Final q200 focus choice:
+
+```text
+layers = [35]
+alpha = 0.25
+rank = 2
+token_window = 16
+```
+
+Overall interpretation:
+
+- q200 复验推翻了 limit=40 pilot 的默认参数 `[33], alpha=1.0, rank=4, token_window=4`。
+- q200 更支持一个保守、低强度、低秩、单层 late-layer hook：`[35], alpha=0.25, rank=2, token_window=16`。
+- 该组合的行为收益很小但方向正确：baseline flip `40.83%` 降到 `40.58%`，`net_gain=+2`，且没有 `correct->wrong`。
+- 当前 ARA hook 还不是强效果；更像一个低副作用的 proof-of-signal。后续要扩大收益，应优先围绕 `[35], alpha=0.25, rank=1/2, token_window=16/32` 做更细 alpha 和 calibration 策略，而不是加更多 late layers 或更大 rank。
