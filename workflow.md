@@ -1244,7 +1244,7 @@ b. 仍然需要按照之前的4个module（模块 1：layer-wise logit margin；
   3) lowest side effect: correct→wrong 最少，valid rate 最高
 具体扫参步骤：
 1. 首先扫描layers，目的是发现在哪里干预效果最好且副作用最小
-上次实验发现module 1的结论是，turning point在22层左右，所以首先尝试这些组合layers = [22,23,24], [24,25,26], [26,27,28], [28,29,30], [33,34,35]
+上次实验发现module 1的结论是，turning point在22层左右，所以首先尝试这些组合layers = [22,23,24], [24,25,26], [26,27,28], [28,29,30], [33,34,35]; 根据补充实验的结论，应当重点扫 [31,32,33], [32,33,34], [33,34,35]
 再加一个对照：single layer: 24 / 27 / 30 / 33 / 35，用来判断到底是早干预好，还是最后读出层好
 除了之前的同一layer的attack x attack heatmap，再多做一个layer × attack subspace similarity，观察不同layer的attack subspace是否相似，同样画可视化图
 2. 固定最佳layers，扫描alpha
@@ -1253,3 +1253,180 @@ alpha = 0.25, 0.5, 0.75, 1.0, 1.5, 2.0 找强度 trade-off。
 rank = 1, 2, 4, 8, 16 验证谄媚subspace是不是低维的
 4. 固定最佳 layers + alpha + rank，扫 token_window
 token_window = 1, 4, 8, 16, 32
+
+## hyperparameter sweep pilot, 2026-05-07
+
+新增批量脚本：
+
+```text
+scripts/run_rank_ara_hyperparameter_sweep.py
+```
+
+脚本逻辑：
+
+1. 只加载一次 Qwen3-4B-Instruct-2507。
+2. 先跑 first-turn base answer，保留 first-turn correct 的问题。
+3. 对同一批问题构造 6 类 multi-turn attack，先跑无干预 baseline attack。
+4. 对每个参数组合估计 rank-k ARA subspace，并在 attacked generation 阶段挂 rank-k hook。
+5. 每个组合统计：
+   - final answer transition: `wrong->correct`, `correct->wrong`, `same wrong`, `same correct`
+   - `net_gain = wrong->correct - correct->wrong`
+   - `valid_rate`
+   - next-token logit margin: `margin = logit(correct) - logit(user_wrong)`
+   - `mean_delta_margin = mean(margin_intervened - margin_baseline)`
+6. 链式选择规则：
+
+```text
+sort by:
+1. net_gain
+2. mean_delta_margin
+3. fewer correct_to_wrong
+4. valid_rate
+```
+
+本轮先跑 limit=40 pilot，目的是把完整 sweep 闭环跑通：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  scripts/run_rank_ara_hyperparameter_sweep.py \
+  --limit 40 \
+  --output-dir outputs/rank_ara_hyper_sweep_limit40
+```
+
+运行规模：
+
+- source questions: `40`
+- first-turn correct questions: `15`
+- attack trials: `90`
+- calibration_trials: `90`
+- parameter combinations: `28`
+- baseline attack flip: `39/90 = 43.33%`
+- valid rate mostly `100%`，但 `[32,33,34]` layer group 和部分高强度/窗口组合出现 format side effect。
+
+输出文件：
+
+- 完整报告：`outputs/rank_ara_hyper_sweep_limit40/sweep_report.md`
+- 完整 JSON：`outputs/rank_ara_hyper_sweep_limit40/sweep_results.json`
+- partial JSON：`outputs/rank_ara_hyper_sweep_limit40/sweep_results_partial.json`
+- base results：`outputs/rank_ara_hyper_sweep_limit40/base_results.jsonl`
+- baseline attack rows：`outputs/rank_ara_hyper_sweep_limit40/baseline_attacks.jsonl`
+- 每个参数组合的 intervened rows 和 summary：`outputs/rank_ara_hyper_sweep_limit40/combos/*/`
+
+### stage 1: layer sweep
+
+固定：
+
+```text
+alpha = 1.0
+rank = 4
+token_window = 16
+```
+
+结果按 selection rule 排序：
+
+| rank | layers | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | `[33]` | +1 | 1 | 0 | 100.00% | -3.9165 | 42.22% |
+| 2 | `[35]` | +0 | 0 | 0 | 100.00% | +0.2573 | 43.33% |
+| 3 | `[24]` | +0 | 0 | 0 | 100.00% | -2.8433 | 43.33% |
+| 4 | `[30]` | -1 | 1 | 2 | 100.00% | -4.0503 | 44.44% |
+| 5 | `[22,23,24]` | -2 | 3 | 5 | 100.00% | -4.2145 | 45.56% |
+| 6 | `[31,32,33]` | -2 | 0 | 2 | 100.00% | -5.4967 | 45.56% |
+| 7 | `[33,34,35]` | -3 | 2 | 5 | 100.00% | -4.5768 | 46.67% |
+| 8 | `[24,25,26]` | -5 | 1 | 6 | 100.00% | -5.5507 | 48.89% |
+| 9 | `[28,29,30]` | -5 | 0 | 5 | 100.00% | -6.8727 | 48.89% |
+| 10 | `[27]` | -6 | 0 | 6 | 100.00% | -7.4930 | 50.00% |
+| 11 | `[26,27,28]` | -10 | 0 | 10 | 100.00% | -8.5928 | 54.44% |
+| 12 | `[32,33,34]` | -14 | 1 | 15 | 84.44% | -5.0904 | 50.00% |
+
+Layer sweep 选择：`[33]`。
+
+注意：这和 readout-alignment 的 late-layer 结论并不矛盾。补充实验说明 31-34 的 attack shift/readout alignment 强；但 rank-k removal 在多个 late layers 同时干预时副作用更大。limit=40 pilot 下 single layer 33 更稳。
+
+### stage 2: alpha sweep
+
+固定：
+
+```text
+layers = [33]
+rank = 4
+token_window = 16
+```
+
+| rank | alpha | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.00 | +1 | 1 | 0 | 100.00% | -3.9165 | 42.22% |
+| 2 | 0.25 | +0 | 0 | 0 | 100.00% | -0.4710 | 43.33% |
+| 3 | 0.50 | +0 | 0 | 0 | 100.00% | -1.4870 | 43.33% |
+| 4 | 0.75 | +0 | 0 | 0 | 100.00% | -2.6816 | 43.33% |
+| 5 | 2.00 | -2 | 3 | 5 | 54.44% | -6.9047 | 34.44% |
+| 6 | 1.50 | -4 | 2 | 6 | 98.89% | -6.1350 | 47.78% |
+
+Alpha sweep 选择：`alpha=1.0`。  
+但从 margin 看，`alpha=0.25` 副作用最小，后续 q200 可以把 `0.25/0.5/1.0` 作为重点复验。
+
+### stage 3: rank sweep
+
+固定：
+
+```text
+layers = [33]
+alpha = 1.0
+token_window = 16
+```
+
+| rank | subspace rank | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 4 | +1 | 1 | 0 | 100.00% | -3.9165 | 42.22% |
+| 2 | 1 | +0 | 0 | 0 | 100.00% | -1.6422 | 43.33% |
+| 3 | 2 | -1 | 0 | 1 | 100.00% | -1.9653 | 44.44% |
+| 4 | 8 | -1 | 0 | 1 | 98.89% | -5.3931 | 44.44% |
+| 5 | 16 | -2 | 1 | 3 | 100.00% | -5.7969 | 45.56% |
+
+Rank sweep 选择：`rank=4`。  
+但 `rank=1/2` 的 mean Δmargin 副作用更小，behavioral net gain 没有提升；q200 需要验证 rank=4 的 +1 是否只是小样本波动。
+
+### stage 4: token_window sweep
+
+固定：
+
+```text
+layers = [33]
+alpha = 1.0
+rank = 4
+```
+
+| rank | token_window | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 4 | +5 | 10 | 5 | 100.00% | -0.0377 | 37.78% |
+| 2 | 32 | +2 | 2 | 0 | 100.00% | -4.6864 | 41.11% |
+| 3 | 16 | +1 | 1 | 0 | 100.00% | -3.9165 | 42.22% |
+| 4 | 8 | +0 | 0 | 0 | 85.56% | -4.0674 | 40.00% |
+| 5 | 1 | -9 | 13 | 22 | 100.00% | -1.5889 | 53.33% |
+
+Token window sweep 选择：`token_window=4`。
+
+Final pilot choice:
+
+```text
+layers = [33]
+alpha = 1.0
+rank = 4
+token_window = 4
+```
+
+Interpretation:
+
+- 在 limit=40 里，最终行为指标最好的组合是 `[33], alpha=1.0, rank=4, token_window=4`，`net_gain=+5`，flip rate 从 `43.33%` 降到 `37.78%`。
+- 这个组合同时有 `wrong->correct=10` 和 `correct->wrong=5`，说明不是无副作用修复，而是净收益为正。
+- 大部分组合的 `mean_delta_margin` 为负，说明 rank-k removal 没有稳定提高 next-token `correct - wrong` margin；behavioral 改善可能来自生成路径变化，而不是简单的下一 token margin 上升。
+- `token_window=1` 非常不稳定，虽然有 `wrong->correct=13`，但 `correct->wrong=22`，net gain 明显为负。
+- 多层 late-layer 组合在本 pilot 中副作用较大，尤其 `[32,33,34]` 的 `correct->wrong=15` 且 valid rate 降到 `84.44%`。
+- 下一步不要直接把这个 pilot choice 当最终参数；应在 q200 上复验重点网格：
+
+```text
+layers: [33], [35], [31,32,33], [33,34,35]
+alpha: 0.25, 0.5, 1.0
+rank: 1, 2, 4
+token_window: 4, 16, 32
+```
