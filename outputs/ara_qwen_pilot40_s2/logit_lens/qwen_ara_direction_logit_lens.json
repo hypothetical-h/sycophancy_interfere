@@ -1,0 +1,3185 @@
+{
+  "model": "/home/hanruoshui/.cache/modelscope/hub/models/Qwen/Qwen3-4B-Instruct-2507",
+  "directions": "outputs/ara_qwen_pilot40_s2/qwen_ara_directions.pt",
+  "top_k": 20,
+  "lens_definitions": {
+    "direct": "logits = unembedding @ direction",
+    "normalized": "logits = unembedding @ RMSNorm(direction)"
+  },
+  "layers": [
+    {
+      "layer": 12,
+      "direction_norm": 0.9999997019767761,
+      "direct_positive_top": [
+        {
+          "token_id": 99738,
+          "token": "令",
+          "score": 0.0887800082564354
+        },
+        {
+          "token_id": 104399,
+          "token": "中间",
+          "score": 0.08380050957202911
+        },
+        {
+          "token_id": 6497,
+          "token": "ivery",
+          "score": 0.08376047760248184
+        },
+        {
+          "token_id": 99814,
+          "token": "资产",
+          "score": 0.08188840746879578
+        },
+        {
+          "token_id": 102231,
+          "token": "好好",
+          "score": 0.08025746047496796
+        },
+        {
+          "token_id": 104036,
+          "token": "挑战",
+          "score": 0.07965650409460068
+        },
+        {
+          "token_id": 15938,
+          "token": "acht",
+          "score": 0.07886030524969101
+        },
+        {
+          "token_id": 99285,
+          "token": "低",
+          "score": 0.07804716378450394
+        },
+        {
+          "token_id": 116036,
+          "token": "山庄",
+          "score": 0.07688606530427933
+        },
+        {
+          "token_id": 14412,
+          "token": "egr",
+          "score": 0.07435862720012665
+        },
+        {
+          "token_id": 41372,
+          "token": "erner",
+          "score": 0.07249058037996292
+        },
+        {
+          "token_id": 11632,
+          "token": "eric",
+          "score": 0.07209937274456024
+        },
+        {
+          "token_id": 44146,
+          "token": "erset",
+          "score": 0.07051483541727066
+        },
+        {
+          "token_id": 99432,
+          "token": "楼",
+          "score": 0.07001552730798721
+        },
+        {
+          "token_id": 5923,
+          "token": "ober",
+          "score": 0.06891309469938278
+        },
+        {
+          "token_id": 16,
+          "token": "1",
+          "score": 0.06849992275238037
+        },
+        {
+          "token_id": 56971,
+          "token": " Tribunal",
+          "score": 0.06822320073843002
+        },
+        {
+          "token_id": 6757,
+          "token": " charge",
+          "score": 0.06820893287658691
+        },
+        {
+          "token_id": 1937,
+          "token": "leg",
+          "score": 0.06778416782617569
+        },
+        {
+          "token_id": 104032,
+          "token": "小说",
+          "score": 0.06749001890420914
+        }
+      ],
+      "direct_negative_top": [
+        {
+          "token_id": 39015,
+          "token": "fetchAll",
+          "score": -0.120322085916996
+        },
+        {
+          "token_id": 54196,
+          "token": "ItemAt",
+          "score": -0.11728040874004364
+        },
+        {
+          "token_id": 77798,
+          "token": " fetchData",
+          "score": -0.11539972573518753
+        },
+        {
+          "token_id": 139429,
+          "token": " 아니다",
+          "score": -0.10715816915035248
+        },
+        {
+          "token_id": 52576,
+          "token": "…and",
+          "score": -0.10715305060148239
+        },
+        {
+          "token_id": 21879,
+          "token": "_CAP",
+          "score": -0.10662506520748138
+        },
+        {
+          "token_id": 108676,
+          "token": "哄",
+          "score": -0.10527857393026352
+        },
+        {
+          "token_id": 101771,
+          "token": "錯",
+          "score": -0.10481373220682144
+        },
+        {
+          "token_id": 110905,
+          "token": "请联系",
+          "score": -0.10453478246927261
+        },
+        {
+          "token_id": 112145,
+          "token": "不到位",
+          "score": -0.1043311133980751
+        },
+        {
+          "token_id": 110426,
+          "token": "相对较",
+          "score": -0.10429617017507553
+        },
+        {
+          "token_id": 17653,
+          "token": "phia",
+          "score": -0.10407447814941406
+        },
+        {
+          "token_id": 82666,
+          "token": "…but",
+          "score": -0.10387996584177017
+        },
+        {
+          "token_id": 114356,
+          "token": "成名",
+          "score": -0.10380523651838303
+        },
+        {
+          "token_id": 27388,
+          "token": ".cap",
+          "score": -0.10276569426059723
+        },
+        {
+          "token_id": 95125,
+          "token": "IService",
+          "score": -0.10226918011903763
+        },
+        {
+          "token_id": 83055,
+          "token": "AdapterFactory",
+          "score": -0.10147582739591599
+        },
+        {
+          "token_id": 74769,
+          "token": "ItemCount",
+          "score": -0.1010756716132164
+        },
+        {
+          "token_id": 99147,
+          "token": " moden",
+          "score": -0.10049127787351608
+        },
+        {
+          "token_id": 41243,
+          "token": "itles",
+          "score": -0.10029438883066177
+        }
+      ],
+      "normalized_positive_top": [
+        {
+          "token_id": 99738,
+          "token": "令",
+          "score": 12.440956115722656
+        },
+        {
+          "token_id": 104399,
+          "token": "中间",
+          "score": 11.639108657836914
+        },
+        {
+          "token_id": 6497,
+          "token": "ivery",
+          "score": 11.302589416503906
+        },
+        {
+          "token_id": 99814,
+          "token": "资产",
+          "score": 11.184637069702148
+        },
+        {
+          "token_id": 99285,
+          "token": "低",
+          "score": 10.964061737060547
+        },
+        {
+          "token_id": 102231,
+          "token": "好好",
+          "score": 10.897741317749023
+        },
+        {
+          "token_id": 104036,
+          "token": "挑战",
+          "score": 10.591526985168457
+        },
+        {
+          "token_id": 15938,
+          "token": "acht",
+          "score": 10.110688209533691
+        },
+        {
+          "token_id": 116036,
+          "token": "山庄",
+          "score": 10.098923683166504
+        },
+        {
+          "token_id": 5923,
+          "token": "ober",
+          "score": 10.065113067626953
+        },
+        {
+          "token_id": 56971,
+          "token": " Tribunal",
+          "score": 9.952434539794922
+        },
+        {
+          "token_id": 6757,
+          "token": " charge",
+          "score": 9.826470375061035
+        },
+        {
+          "token_id": 99985,
+          "token": "裁",
+          "score": 9.771820068359375
+        },
+        {
+          "token_id": 99432,
+          "token": "楼",
+          "score": 9.740394592285156
+        },
+        {
+          "token_id": 111831,
+          "token": "冻结",
+          "score": 9.616097450256348
+        },
+        {
+          "token_id": 22641,
+          "token": " charging",
+          "score": 9.327141761779785
+        },
+        {
+          "token_id": 10246,
+          "token": " lie",
+          "score": 9.244447708129883
+        },
+        {
+          "token_id": 11731,
+          "token": " recover",
+          "score": 9.159619331359863
+        },
+        {
+          "token_id": 11632,
+          "token": "eric",
+          "score": 8.98751449584961
+        },
+        {
+          "token_id": 15551,
+          "token": " inject",
+          "score": 8.969679832458496
+        }
+      ],
+      "normalized_negative_top": [
+        {
+          "token_id": 39015,
+          "token": "fetchAll",
+          "score": -16.224302291870117
+        },
+        {
+          "token_id": 54196,
+          "token": "ItemAt",
+          "score": -16.003328323364258
+        },
+        {
+          "token_id": 139429,
+          "token": " 아니다",
+          "score": -15.425660133361816
+        },
+        {
+          "token_id": 101771,
+          "token": "錯",
+          "score": -15.183614730834961
+        },
+        {
+          "token_id": 112145,
+          "token": "不到位",
+          "score": -15.037433624267578
+        },
+        {
+          "token_id": 77798,
+          "token": " fetchData",
+          "score": -14.703998565673828
+        },
+        {
+          "token_id": 110905,
+          "token": "请联系",
+          "score": -14.391477584838867
+        },
+        {
+          "token_id": 83055,
+          "token": "AdapterFactory",
+          "score": -14.32723331451416
+        },
+        {
+          "token_id": 41243,
+          "token": "itles",
+          "score": -14.309896469116211
+        },
+        {
+          "token_id": 74769,
+          "token": "ItemCount",
+          "score": -14.286985397338867
+        },
+        {
+          "token_id": 108676,
+          "token": "哄",
+          "score": -14.25373363494873
+        },
+        {
+          "token_id": 74026,
+          "token": "StackSize",
+          "score": -14.134645462036133
+        },
+        {
+          "token_id": 99147,
+          "token": " moden",
+          "score": -14.089542388916016
+        },
+        {
+          "token_id": 95125,
+          "token": "IService",
+          "score": -14.035168647766113
+        },
+        {
+          "token_id": 27388,
+          "token": ".cap",
+          "score": -14.02685546875
+        },
+        {
+          "token_id": 53239,
+          "token": "ffield",
+          "score": -14.003691673278809
+        },
+        {
+          "token_id": 9133,
+          "token": "ISE",
+          "score": -13.890606880187988
+        },
+        {
+          "token_id": 106670,
+          "token": "错了",
+          "score": -13.787243843078613
+        },
+        {
+          "token_id": 60230,
+          "token": "iphy",
+          "score": -13.784515380859375
+        },
+        {
+          "token_id": 58317,
+          "token": "-caption",
+          "score": -13.775662422180176
+        }
+      ],
+      "direct_option_scores": {
+        "A": {
+          "best_score": 0.02034761756658554,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 0.02034761756658554
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.003494603093713522
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.003494603093713522
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": -0.016694296151399612
+            }
+          ]
+        },
+        "B": {
+          "best_score": 0.024208109825849533,
+          "variants": [
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": 0.024208109825849533
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -0.0017817053012549877
+            },
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.006789060775190592
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.006789060775190592
+            }
+          ]
+        },
+        "C": {
+          "best_score": 0.03969013690948486,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": 0.03969013690948486
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": 0.007192262448370457
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": 0.007192262448370457
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": 0.00040401495061814785
+            }
+          ]
+        },
+        "D": {
+          "best_score": 0.025829317048192024,
+          "variants": [
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": 0.025829317048192024
+            },
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.008592810481786728
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.008592810481786728
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -0.019785046577453613
+            }
+          ]
+        },
+        "E": {
+          "best_score": 0.0493646077811718,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 0.0493646077811718
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.027265191078186035
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.027265191078186035
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": 0.002880239160731435
+            }
+          ]
+        }
+      },
+      "normalized_option_scores": {
+        "A": {
+          "best_score": 1.649489164352417,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 1.649489164352417
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -1.0975931882858276
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -1.0975931882858276
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": -2.5436296463012695
+            }
+          ]
+        },
+        "B": {
+          "best_score": 2.688424587249756,
+          "variants": [
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": 2.688424587249756
+            },
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": 0.1554916501045227
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": 0.1554916501045227
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -0.9196180105209351
+            }
+          ]
+        },
+        "C": {
+          "best_score": 4.301990985870361,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": 4.301990985870361
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": 1.0345782041549683
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": 1.0345782041549683
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": -0.9762410521507263
+            }
+          ]
+        },
+        "D": {
+          "best_score": 3.0771305561065674,
+          "variants": [
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": 3.0771305561065674
+            },
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.8841245174407959
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.8841245174407959
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -2.768022060394287
+            }
+          ]
+        },
+        "E": {
+          "best_score": 5.741832256317139,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 5.741832256317139
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 3.4575932025909424
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 3.4575932025909424
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": -0.07370250672101974
+            }
+          ]
+        }
+      },
+      "direct_probe_scores": [
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": 0.029151178896427155
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": 0.029117198660969734
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": 0.025925373658537865
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": 0.025215961039066315
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": 0.02369719371199608
+        },
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": 0.019224390387535095
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 0.017556143924593925
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": 0.006845565978437662
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": 0.00469649164006114
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": 0.0029865780379623175
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": 0.002880239160731435
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": 0.0015941658057272434
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": 0.00040401495061814785
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": 0.0002761452633421868
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": -0.000129592081066221
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -0.0017817053012549877
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": -0.0024056262336671352
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": -0.0034218113869428635
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": -0.004392924718558788
+        },
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": -0.016694296151399612
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": -0.01692950911819935
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -0.019785046577453613
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": -0.022035736590623856
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": -0.022708600386977196
+        },
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": -0.02415541745722294
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": -0.04001135379076004
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": -0.047864168882369995
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": -0.05055457726120949
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": -0.06197754293680191
+        }
+      ],
+      "normalized_probe_scores": [
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": 4.676629543304443
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": 3.616495370864868
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": 3.4548285007476807
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": 3.276446580886841
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": 2.491719961166382
+        },
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": 2.3098301887512207
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 1.721819281578064
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": 0.6469643115997314
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": 0.5694464445114136
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": 0.13566619157791138
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": 0.04744758456945419
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": 0.01495332270860672
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": -0.07370250672101974
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": -0.13219182193279266
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": -0.4015388488769531
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": -0.6884541511535645
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -0.9196180105209351
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": -0.9762410521507263
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": -1.269851565361023
+        },
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": -2.5436296463012695
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": -2.7355713844299316
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -2.768022060394287
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": -2.7868812084198
+        },
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": -3.305809259414673
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": -3.4937636852264404
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": -5.912993431091309
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": -6.0714216232299805
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": -7.675668716430664
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": -7.81946325302124
+        }
+      ]
+    },
+    {
+      "layer": 18,
+      "direction_norm": 0.9999998211860657,
+      "direct_positive_top": [
+        {
+          "token_id": 107828,
+          "token": "你自己",
+          "score": 0.11235131323337555
+        },
+        {
+          "token_id": 111185,
+          "token": "有价值",
+          "score": 0.1081824004650116
+        },
+        {
+          "token_id": 106749,
+          "token": "我自己",
+          "score": 0.10759507864713669
+        },
+        {
+          "token_id": 72269,
+          "token": "olon",
+          "score": 0.10250085592269897
+        },
+        {
+          "token_id": 48103,
+          "token": " Meaning",
+          "score": 0.10158243775367737
+        },
+        {
+          "token_id": 59404,
+          "token": "@(",
+          "score": 0.10132315754890442
+        },
+        {
+          "token_id": 32265,
+          "token": " Alignment",
+          "score": 0.0990394800901413
+        },
+        {
+          "token_id": 39057,
+          "token": "sess",
+          "score": 0.09893932938575745
+        },
+        {
+          "token_id": 115276,
+          "token": "机械化",
+          "score": 0.09762904793024063
+        },
+        {
+          "token_id": 83675,
+          "token": ":min",
+          "score": 0.09761042892932892
+        },
+        {
+          "token_id": 58905,
+          "token": " Yourself",
+          "score": 0.09595208615064621
+        },
+        {
+          "token_id": 94799,
+          "token": " ....\n\n",
+          "score": 0.0957646444439888
+        },
+        {
+          "token_id": 119235,
+          "token": "嘟",
+          "score": 0.09571125358343124
+        },
+        {
+          "token_id": 88968,
+          "token": "ierce",
+          "score": 0.09444186091423035
+        },
+        {
+          "token_id": 55926,
+          "token": " meaningless",
+          "score": 0.09356709569692612
+        },
+        {
+          "token_id": 3999,
+          "token": " pur",
+          "score": 0.0920196995139122
+        },
+        {
+          "token_id": 13217,
+          "token": " ourselves",
+          "score": 0.09157220274209976
+        },
+        {
+          "token_id": 35422,
+          "token": "passed",
+          "score": 0.09149432182312012
+        },
+        {
+          "token_id": 60857,
+          "token": "_tiles",
+          "score": 0.09113578498363495
+        },
+        {
+          "token_id": 73747,
+          "token": " Sponsored",
+          "score": 0.0902034267783165
+        }
+      ],
+      "direct_negative_top": [
+        {
+          "token_id": 11302,
+          "token": "aret",
+          "score": -0.08671942353248596
+        },
+        {
+          "token_id": 483,
+          "token": "ill",
+          "score": -0.08382304757833481
+        },
+        {
+          "token_id": 101489,
+          "token": "尺",
+          "score": -0.08218760788440704
+        },
+        {
+          "token_id": 26052,
+          "token": " junior",
+          "score": -0.07903777062892914
+        },
+        {
+          "token_id": 100515,
+          "token": "漏",
+          "score": -0.0789853185415268
+        },
+        {
+          "token_id": 18857,
+          "token": "igne",
+          "score": -0.07780981808900833
+        },
+        {
+          "token_id": 115818,
+          "token": "仍未",
+          "score": -0.07763640582561493
+        },
+        {
+          "token_id": 19375,
+          "token": " packed",
+          "score": -0.07612622529268265
+        },
+        {
+          "token_id": 118838,
+          "token": "此案",
+          "score": -0.07587691396474838
+        },
+        {
+          "token_id": 45899,
+          "token": "%^",
+          "score": -0.07565152645111084
+        },
+        {
+          "token_id": 16668,
+          "token": "hes",
+          "score": -0.07556459307670593
+        },
+        {
+          "token_id": 76187,
+          "token": "rights",
+          "score": -0.0753905326128006
+        },
+        {
+          "token_id": 3769,
+          "token": " pack",
+          "score": -0.07499539852142334
+        },
+        {
+          "token_id": 307,
+          "token": "id",
+          "score": -0.0746232345700264
+        },
+        {
+          "token_id": 34365,
+          "token": "rink",
+          "score": -0.07461757212877274
+        },
+        {
+          "token_id": 5249,
+          "token": "ido",
+          "score": -0.07301190495491028
+        },
+        {
+          "token_id": 107145,
+          "token": "此事",
+          "score": -0.07229001820087433
+        },
+        {
+          "token_id": 107841,
+          "token": "好事",
+          "score": -0.07222463935613632
+        },
+        {
+          "token_id": 107449,
+          "token": "出具",
+          "score": -0.07145959138870239
+        },
+        {
+          "token_id": 62389,
+          "token": "setFlash",
+          "score": -0.07126305997371674
+        }
+      ],
+      "normalized_positive_top": [
+        {
+          "token_id": 107828,
+          "token": "你自己",
+          "score": 15.288413047790527
+        },
+        {
+          "token_id": 106749,
+          "token": "我自己",
+          "score": 14.850715637207031
+        },
+        {
+          "token_id": 111185,
+          "token": "有价值",
+          "score": 14.722875595092773
+        },
+        {
+          "token_id": 32265,
+          "token": " Alignment",
+          "score": 14.210871696472168
+        },
+        {
+          "token_id": 72269,
+          "token": "olon",
+          "score": 13.553549766540527
+        },
+        {
+          "token_id": 48103,
+          "token": " Meaning",
+          "score": 13.080238342285156
+        },
+        {
+          "token_id": 99234,
+          "token": "快",
+          "score": 13.020503044128418
+        },
+        {
+          "token_id": 59404,
+          "token": "@(",
+          "score": 12.738363265991211
+        },
+        {
+          "token_id": 58960,
+          "token": "tsy",
+          "score": 12.670930862426758
+        },
+        {
+          "token_id": 115276,
+          "token": "机械化",
+          "score": 12.570198059082031
+        },
+        {
+          "token_id": 88968,
+          "token": "ierce",
+          "score": 12.560704231262207
+        },
+        {
+          "token_id": 83675,
+          "token": ":min",
+          "score": 12.514860153198242
+        },
+        {
+          "token_id": 6612,
+          "token": "align",
+          "score": 12.421832084655762
+        },
+        {
+          "token_id": 99843,
+          "token": "慢",
+          "score": 12.392656326293945
+        },
+        {
+          "token_id": 104692,
+          "token": "非法",
+          "score": 12.336280822753906
+        },
+        {
+          "token_id": 58905,
+          "token": " Yourself",
+          "score": 12.318985939025879
+        },
+        {
+          "token_id": 55926,
+          "token": " meaningless",
+          "score": 12.23604679107666
+        },
+        {
+          "token_id": 39057,
+          "token": "sess",
+          "score": 12.138283729553223
+        },
+        {
+          "token_id": 115404,
+          "token": "有用",
+          "score": 12.079570770263672
+        },
+        {
+          "token_id": 119235,
+          "token": "嘟",
+          "score": 12.07838249206543
+        }
+      ],
+      "normalized_negative_top": [
+        {
+          "token_id": 11302,
+          "token": "aret",
+          "score": -12.266106605529785
+        },
+        {
+          "token_id": 26052,
+          "token": " junior",
+          "score": -11.874682426452637
+        },
+        {
+          "token_id": 483,
+          "token": "ill",
+          "score": -11.656942367553711
+        },
+        {
+          "token_id": 115818,
+          "token": "仍未",
+          "score": -11.48587417602539
+        },
+        {
+          "token_id": 101489,
+          "token": "尺",
+          "score": -11.214154243469238
+        },
+        {
+          "token_id": 126295,
+          "token": "gé",
+          "score": -10.978652000427246
+        },
+        {
+          "token_id": 54054,
+          "token": " indoors",
+          "score": -10.920413970947266
+        },
+        {
+          "token_id": 29519,
+          "token": " indoor",
+          "score": -10.833295822143555
+        },
+        {
+          "token_id": 5249,
+          "token": "ido",
+          "score": -10.829116821289062
+        },
+        {
+          "token_id": 45899,
+          "token": "%^",
+          "score": -10.826234817504883
+        },
+        {
+          "token_id": 94148,
+          "token": "-scripts",
+          "score": -10.769309997558594
+        },
+        {
+          "token_id": 35965,
+          "token": " corrected",
+          "score": -10.732787132263184
+        },
+        {
+          "token_id": 18857,
+          "token": "igne",
+          "score": -10.702032089233398
+        },
+        {
+          "token_id": 34050,
+          "token": "amina",
+          "score": -10.66882610321045
+        },
+        {
+          "token_id": 4396,
+          "token": " correct",
+          "score": -10.667155265808105
+        },
+        {
+          "token_id": 22613,
+          "token": "cion",
+          "score": -10.642196655273438
+        },
+        {
+          "token_id": 71685,
+          "token": "rack",
+          "score": -10.623832702636719
+        },
+        {
+          "token_id": 95771,
+          "token": ".setFill",
+          "score": -10.614981651306152
+        },
+        {
+          "token_id": 76187,
+          "token": "rights",
+          "score": -10.60740852355957
+        },
+        {
+          "token_id": 16668,
+          "token": "hes",
+          "score": -10.595438957214355
+        }
+      ],
+      "direct_option_scores": {
+        "A": {
+          "best_score": 0.004743803758174181,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 0.004743803758174181
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.0021721492521464825
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.0021721492521464825
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": -0.020912982523441315
+            }
+          ]
+        },
+        "B": {
+          "best_score": 0.006432201247662306,
+          "variants": [
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": 0.006432201247662306
+            },
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": 0.0006207356927916408
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": 0.0006207356927916408
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -0.019072243943810463
+            }
+          ]
+        },
+        "C": {
+          "best_score": 0.012047638185322285,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": 0.012047638185322285
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -0.012830534018576145
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -0.012830534018576145
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": -0.020008476451039314
+            }
+          ]
+        },
+        "D": {
+          "best_score": 0.0015471559017896652,
+          "variants": [
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": 0.0015471559017896652
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": 0.0015471559017896652
+            },
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": -0.009937727823853493
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -0.014413964003324509
+            }
+          ]
+        },
+        "E": {
+          "best_score": 0.010206377133727074,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 0.010206377133727074
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.0038979966193437576
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.0038979966193437576
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": -0.018141068518161774
+            }
+          ]
+        }
+      },
+      "normalized_option_scores": {
+        "A": {
+          "best_score": 1.661267876625061,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 1.661267876625061
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.09407062828540802
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": -0.09407062828540802
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": -2.0026068687438965
+            }
+          ]
+        },
+        "B": {
+          "best_score": 1.3308404684066772,
+          "variants": [
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": 1.3308404684066772
+            },
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.20348112285137177
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.20348112285137177
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -1.7437024116516113
+            }
+          ]
+        },
+        "C": {
+          "best_score": 2.178612470626831,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": 2.178612470626831
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": -1.7822015285491943
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -2.1599323749542236
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -2.1599323749542236
+            }
+          ]
+        },
+        "D": {
+          "best_score": 0.08611088246107101,
+          "variants": [
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": 0.08611088246107101
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": 0.08611088246107101
+            },
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": -0.7412184476852417
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -1.3441981077194214
+            }
+          ]
+        },
+        "E": {
+          "best_score": 1.54935622215271,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 1.54935622215271
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": -0.17382410168647766
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": -0.17382410168647766
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": -1.8471803665161133
+            }
+          ]
+        }
+      },
+      "direct_probe_scores": [
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": 0.03984709829092026
+        },
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": 0.03519042581319809
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": 0.019537808373570442
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": 0.019031334668397903
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": 0.01625281199812889
+        },
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": 0.01010996662080288
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": 0.008492304012179375
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": 0.005855446215718985
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 0.004042692016810179
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": 0.003301674034446478
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": 0.0015532440738752484
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": -0.009907934814691544
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": -0.011227762326598167
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": -0.011818217113614082
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": -0.013479144312441349
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -0.014413964003324509
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": -0.015015950426459312
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": -0.018141068518161774
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": -0.018588408827781677
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -0.019072243943810463
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": -0.020008476451039314
+        },
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": -0.020912982523441315
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": -0.02764076367020607
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": -0.029013408347964287
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": -0.031210308894515038
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": -0.03198469057679176
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": -0.03633652627468109
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": -0.04094287008047104
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": -0.06944523751735687
+        }
+      ],
+      "normalized_probe_scores": [
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": 5.178511619567871
+        },
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": 4.819397926330566
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": 2.3948867321014404
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": 2.067625045776367
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": 1.6036957502365112
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": 0.9720364809036255
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": 0.6288937926292419
+        },
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": 0.47668778896331787
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 0.33026185631752014
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": -0.15109200775623322
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": -0.8718459010124207
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": -1.0958517789840698
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -1.3441981077194214
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": -1.7430554628372192
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -1.7437024116516113
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": -1.7822015285491943
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": -1.8135849237442017
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": -1.8471803665161133
+        },
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": -2.0026068687438965
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": -2.7115135192871094
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": -3.0006678104400635
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": -3.5777456760406494
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": -4.536568641662598
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": -5.085633754730225
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": -5.528268814086914
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": -6.177342891693115
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": -6.200024604797363
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": -6.758199691772461
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": -10.667155265808105
+        }
+      ]
+    },
+    {
+      "layer": 24,
+      "direction_norm": 1.000000238418579,
+      "direct_positive_top": [
+        {
+          "token_id": 61686,
+          "token": "Alice",
+          "score": 0.15155823528766632
+        },
+        {
+          "token_id": 56755,
+          "token": " А",
+          "score": 0.151432067155838
+        },
+        {
+          "token_id": 36863,
+          "token": " Agriculture",
+          "score": 0.1491934210062027
+        },
+        {
+          "token_id": 29405,
+          "token": " Alice",
+          "score": 0.14439141750335693
+        },
+        {
+          "token_id": 38780,
+          "token": "ア",
+          "score": 0.14218538999557495
+        },
+        {
+          "token_id": 110774,
+          "token": "甲方",
+          "score": 0.13831087946891785
+        },
+        {
+          "token_id": 50827,
+          "token": "_air",
+          "score": 0.13781258463859558
+        },
+        {
+          "token_id": 15031,
+          "token": ",A",
+          "score": 0.13464950025081635
+        },
+        {
+          "token_id": 1566,
+          "token": "_A",
+          "score": 0.13292427361011505
+        },
+        {
+          "token_id": 28929,
+          "token": " agriculture",
+          "score": 0.13026447594165802
+        },
+        {
+          "token_id": 88161,
+          "token": ".Asset",
+          "score": 0.12890677154064178
+        },
+        {
+          "token_id": 42812,
+          "token": " Á",
+          "score": 0.12621912360191345
+        },
+        {
+          "token_id": 93532,
+          "token": " ア",
+          "score": 0.12613116204738617
+        },
+        {
+          "token_id": 40676,
+          "token": " apples",
+          "score": 0.12541745603084564
+        },
+        {
+          "token_id": 23465,
+          "token": ">A",
+          "score": 0.12507866322994232
+        },
+        {
+          "token_id": 24708,
+          "token": " Alpha",
+          "score": 0.12463636696338654
+        },
+        {
+          "token_id": 59034,
+          "token": " Agricultural",
+          "score": 0.12345554679632187
+        },
+        {
+          "token_id": 60101,
+          "token": " Airbnb",
+          "score": 0.12293098121881485
+        },
+        {
+          "token_id": 6691,
+          "token": "-A",
+          "score": 0.12161063402891159
+        },
+        {
+          "token_id": 71708,
+          "token": " Agr",
+          "score": 0.12152300029993057
+        }
+      ],
+      "direct_negative_top": [
+        {
+          "token_id": 112150,
+          "token": "乙方",
+          "score": -0.09830765426158905
+        },
+        {
+          "token_id": 27012,
+          "token": "#endregion",
+          "score": -0.09759129583835602
+        },
+        {
+          "token_id": 107184,
+          "token": "后者",
+          "score": -0.09700535237789154
+        },
+        {
+          "token_id": 85086,
+          "token": ".SIG",
+          "score": -0.09104353934526443
+        },
+        {
+          "token_id": 120989,
+          "token": "傧",
+          "score": -0.08860298991203308
+        },
+        {
+          "token_id": 58613,
+          "token": " copyrighted",
+          "score": -0.08835718780755997
+        },
+        {
+          "token_id": 41100,
+          "token": " digging",
+          "score": -0.08567574620246887
+        },
+        {
+          "token_id": 46328,
+          "token": "odia",
+          "score": -0.0846356451511383
+        },
+        {
+          "token_id": 92253,
+          "token": "#c",
+          "score": -0.08418404310941696
+        },
+        {
+          "token_id": 95821,
+          "token": " Bundy",
+          "score": -0.0838434025645256
+        },
+        {
+          "token_id": 12447,
+          "token": "[c",
+          "score": -0.0830468162894249
+        },
+        {
+          "token_id": 33218,
+          "token": " β",
+          "score": -0.08216825127601624
+        },
+        {
+          "token_id": 91623,
+          "token": " dangling",
+          "score": -0.08154992759227753
+        },
+        {
+          "token_id": 119651,
+          "token": "纣",
+          "score": -0.08148197084665298
+        },
+        {
+          "token_id": 51255,
+          "token": "β",
+          "score": -0.08138612657785416
+        },
+        {
+          "token_id": 111394,
+          "token": "点半",
+          "score": -0.08071866631507874
+        },
+        {
+          "token_id": 88032,
+          "token": "descending",
+          "score": -0.08066476881504059
+        },
+        {
+          "token_id": 123445,
+          "token": "踣",
+          "score": -0.08056818693876266
+        },
+        {
+          "token_id": 123785,
+          "token": "鼷",
+          "score": -0.07996957749128342
+        },
+        {
+          "token_id": 33605,
+          "token": "Destination",
+          "score": -0.07992925494909286
+        }
+      ],
+      "normalized_positive_top": [
+        {
+          "token_id": 56755,
+          "token": " А",
+          "score": 20.53306007385254
+        },
+        {
+          "token_id": 38780,
+          "token": "ア",
+          "score": 20.017602920532227
+        },
+        {
+          "token_id": 36863,
+          "token": " Agriculture",
+          "score": 19.94184684753418
+        },
+        {
+          "token_id": 61686,
+          "token": "Alice",
+          "score": 19.80843734741211
+        },
+        {
+          "token_id": 29405,
+          "token": " Alice",
+          "score": 19.127607345581055
+        },
+        {
+          "token_id": 1566,
+          "token": "_A",
+          "score": 18.98340606689453
+        },
+        {
+          "token_id": 110774,
+          "token": "甲方",
+          "score": 18.543880462646484
+        },
+        {
+          "token_id": 15031,
+          "token": ",A",
+          "score": 18.020137786865234
+        },
+        {
+          "token_id": 50827,
+          "token": "_air",
+          "score": 17.925016403198242
+        },
+        {
+          "token_id": 362,
+          "token": " A",
+          "score": 17.506576538085938
+        },
+        {
+          "token_id": 6691,
+          "token": "-A",
+          "score": 17.336965560913086
+        },
+        {
+          "token_id": 28929,
+          "token": " agriculture",
+          "score": 17.08483123779297
+        },
+        {
+          "token_id": 93532,
+          "token": " ア",
+          "score": 16.827484130859375
+        },
+        {
+          "token_id": 23465,
+          "token": ">A",
+          "score": 16.630290985107422
+        },
+        {
+          "token_id": 24708,
+          "token": " Alpha",
+          "score": 16.5855655670166
+        },
+        {
+          "token_id": 47249,
+          "token": "“A",
+          "score": 16.506511688232422
+        },
+        {
+          "token_id": 31269,
+          "token": " arom",
+          "score": 16.47501564025879
+        },
+        {
+          "token_id": 36155,
+          "token": "А",
+          "score": 16.338138580322266
+        },
+        {
+          "token_id": 6553,
+          "token": " Air",
+          "score": 16.20075035095215
+        },
+        {
+          "token_id": 88161,
+          "token": ".Asset",
+          "score": 16.196449279785156
+        }
+      ],
+      "normalized_negative_top": [
+        {
+          "token_id": 107184,
+          "token": "后者",
+          "score": -14.354722023010254
+        },
+        {
+          "token_id": 27012,
+          "token": "#endregion",
+          "score": -13.711506843566895
+        },
+        {
+          "token_id": 112150,
+          "token": "乙方",
+          "score": -13.602972984313965
+        },
+        {
+          "token_id": 85086,
+          "token": ".SIG",
+          "score": -13.220742225646973
+        },
+        {
+          "token_id": 58613,
+          "token": " copyrighted",
+          "score": -13.003117561340332
+        },
+        {
+          "token_id": 120989,
+          "token": "傧",
+          "score": -12.822359085083008
+        },
+        {
+          "token_id": 41100,
+          "token": " digging",
+          "score": -12.433634757995605
+        },
+        {
+          "token_id": 92253,
+          "token": "#c",
+          "score": -12.264228820800781
+        },
+        {
+          "token_id": 105747,
+          "token": "中午",
+          "score": -12.240335464477539
+        },
+        {
+          "token_id": 118299,
+          "token": "下半场",
+          "score": -12.106131553649902
+        },
+        {
+          "token_id": 119651,
+          "token": "纣",
+          "score": -11.882638931274414
+        },
+        {
+          "token_id": 91623,
+          "token": " dangling",
+          "score": -11.802810668945312
+        },
+        {
+          "token_id": 123445,
+          "token": "踣",
+          "score": -11.796463966369629
+        },
+        {
+          "token_id": 95821,
+          "token": " Bundy",
+          "score": -11.760354042053223
+        },
+        {
+          "token_id": 88032,
+          "token": "descending",
+          "score": -11.71382999420166
+        },
+        {
+          "token_id": 38289,
+          "token": "IDDEN",
+          "score": -11.707634925842285
+        },
+        {
+          "token_id": 122734,
+          "token": "剟",
+          "score": -11.680777549743652
+        },
+        {
+          "token_id": 114869,
+          "token": "第二大",
+          "score": -11.667014122009277
+        },
+        {
+          "token_id": 123336,
+          "token": "劂",
+          "score": -11.659704208374023
+        },
+        {
+          "token_id": 51105,
+          "token": "BOOLE",
+          "score": -11.647850036621094
+        }
+      ],
+      "direct_option_scores": {
+        "A": {
+          "best_score": 0.11674879491329193,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 0.11674879491329193
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": 0.10596416890621185
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": 0.09811528027057648
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": 0.09811528027057648
+            }
+          ]
+        },
+        "B": {
+          "best_score": -0.040826842188835144,
+          "variants": [
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.040826842188835144
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -0.040826842188835144
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -0.052465710788965225
+            },
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": -0.0538187175989151
+            }
+          ]
+        },
+        "C": {
+          "best_score": -0.031649693846702576,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": -0.031649693846702576
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -0.03492859750986099
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -0.03492859750986099
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": -0.03802260756492615
+            }
+          ]
+        },
+        "D": {
+          "best_score": -0.04375860095024109,
+          "variants": [
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.04375860095024109
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -0.04375860095024109
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -0.0610542893409729
+            },
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": -0.061443477869033813
+            }
+          ]
+        },
+        "E": {
+          "best_score": 0.04147859662771225,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 0.04147859662771225
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": 0.027783261612057686
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.0269887987524271
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 0.0269887987524271
+            }
+          ]
+        }
+      },
+      "normalized_option_scores": {
+        "A": {
+          "best_score": 17.506576538085938,
+          "variants": [
+            {
+              "variant": " A",
+              "token_id": 362,
+              "token": " A",
+              "score": 17.506576538085938
+            },
+            {
+              "variant": "A",
+              "token_id": 32,
+              "token": "A",
+              "score": 15.693314552307129
+            },
+            {
+              "variant": "(A",
+              "token_id": 4346,
+              "token": "(A",
+              "score": 13.76836109161377
+            },
+            {
+              "variant": "(A)",
+              "token_id": 4346,
+              "token": "(A",
+              "score": 13.76836109161377
+            }
+          ]
+        },
+        "B": {
+          "best_score": -5.806787014007568,
+          "variants": [
+            {
+              "variant": "(B",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -5.806787014007568
+            },
+            {
+              "variant": "(B)",
+              "token_id": 5349,
+              "token": "(B",
+              "score": -5.806787014007568
+            },
+            {
+              "variant": "B",
+              "token_id": 33,
+              "token": "B",
+              "score": -6.157771587371826
+            },
+            {
+              "variant": " B",
+              "token_id": 425,
+              "token": " B",
+              "score": -6.288748741149902
+            }
+          ]
+        },
+        "C": {
+          "best_score": -3.4591712951660156,
+          "variants": [
+            {
+              "variant": " C",
+              "token_id": 356,
+              "token": " C",
+              "score": -3.4591712951660156
+            },
+            {
+              "variant": "C",
+              "token_id": 34,
+              "token": "C",
+              "score": -4.264811038970947
+            },
+            {
+              "variant": "(C",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -4.675571441650391
+            },
+            {
+              "variant": "(C)",
+              "token_id": 3025,
+              "token": "(C",
+              "score": -4.675571441650391
+            }
+          ]
+        },
+        "D": {
+          "best_score": -6.402580261230469,
+          "variants": [
+            {
+              "variant": "(D",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -6.402580261230469
+            },
+            {
+              "variant": "(D)",
+              "token_id": 5432,
+              "token": "(D",
+              "score": -6.402580261230469
+            },
+            {
+              "variant": "D",
+              "token_id": 35,
+              "token": "D",
+              "score": -7.272354602813721
+            },
+            {
+              "variant": " D",
+              "token_id": 422,
+              "token": " D",
+              "score": -7.581597328186035
+            }
+          ]
+        },
+        "E": {
+          "best_score": 5.873167037963867,
+          "variants": [
+            {
+              "variant": " E",
+              "token_id": 468,
+              "token": " E",
+              "score": 5.873167037963867
+            },
+            {
+              "variant": "E",
+              "token_id": 36,
+              "token": "E",
+              "score": 3.9069037437438965
+            },
+            {
+              "variant": "(E",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 3.177849769592285
+            },
+            {
+              "variant": "(E)",
+              "token_id": 10722,
+              "token": "(E",
+              "score": 3.177849769592285
+            }
+          ]
+        }
+      },
+      "direct_probe_scores": [
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": 0.10596416890621185
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": 0.04351477324962616
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": 0.04202032834291458
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": 0.038335539400577545
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": 0.029556766152381897
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": 0.027783261612057686
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 0.025005510076880455
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": 0.024318229407072067
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": 0.02079981192946434
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": 0.01989300549030304
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": 0.018367035314440727
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": 0.01534255500882864
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": 0.0070557198487222195
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": 0.004802882205694914
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": 0.0025479854084551334
+        },
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": 0.0021269205026328564
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": 0.00029749004170298576
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": -0.0024292722810059786
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": -0.006505903322249651
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": -0.01140143908560276
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": -0.011987345293164253
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": -0.015078632161021233
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": -0.015141313895583153
+        },
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": -0.01967349462211132
+        },
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": -0.03126194328069687
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": -0.03802260756492615
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": -0.03838937357068062
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -0.052465710788965225
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -0.0610542893409729
+        }
+      ],
+      "normalized_probe_scores": [
+        {
+          "term": "A",
+          "token_id": 32,
+          "token": "A",
+          "score": 15.693314552307129
+        },
+        {
+          "term": " agree",
+          "token_id": 7503,
+          "token": " agree",
+          "score": 5.703464984893799
+        },
+        {
+          "term": " answer",
+          "token_id": 4226,
+          "token": " answer",
+          "score": 4.690086841583252
+        },
+        {
+          "term": " actually",
+          "token_id": 3520,
+          "token": " actually",
+          "score": 3.932461977005005
+        },
+        {
+          "term": "E",
+          "token_id": 36,
+          "token": "E",
+          "score": 3.9069037437438965
+        },
+        {
+          "term": " I",
+          "token_id": 358,
+          "token": " I",
+          "score": 3.5140116214752197
+        },
+        {
+          "term": " reconsider",
+          "token_id": 39075,
+          "token": " reconsider",
+          "score": 2.7841827869415283
+        },
+        {
+          "term": " majority",
+          "token_id": 8686,
+          "token": " majority",
+          "score": 2.2830870151519775
+        },
+        {
+          "term": " unsure",
+          "token_id": 42903,
+          "token": " unsure",
+          "score": 2.108205556869507
+        },
+        {
+          "term": " incorrect",
+          "token_id": 15114,
+          "token": " incorrect",
+          "score": 2.035212516784668
+        },
+        {
+          "term": " wrong",
+          "token_id": 4969,
+          "token": " wrong",
+          "score": 1.8840328454971313
+        },
+        {
+          "term": " change",
+          "token_id": 2297,
+          "token": " change",
+          "score": 1.6391445398330688
+        },
+        {
+          "term": " cannot",
+          "token_id": 4157,
+          "token": " cannot",
+          "score": 0.025604575872421265
+        },
+        {
+          "term": " correct",
+          "token_id": 4396,
+          "token": " correct",
+          "score": -0.167226180434227
+        },
+        {
+          "term": " taught",
+          "token_id": 15599,
+          "token": " taught",
+          "score": -0.18721060454845428
+        },
+        {
+          "term": " embarrassed",
+          "token_id": 48130,
+          "token": " embarrassed",
+          "score": -0.4242781102657318
+        },
+        {
+          "term": " You",
+          "token_id": 1446,
+          "token": " You",
+          "score": -0.9459766745567322
+        },
+        {
+          "term": " sorry",
+          "token_id": 14589,
+          "token": " sorry",
+          "score": -1.1176875829696655
+        },
+        {
+          "term": " sure",
+          "token_id": 2704,
+          "token": " sure",
+          "score": -1.5298564434051514
+        },
+        {
+          "term": " no",
+          "token_id": 902,
+          "token": " no",
+          "score": -1.695080041885376
+        },
+        {
+          "term": " consensus",
+          "token_id": 23869,
+          "token": " consensus",
+          "score": -1.989964246749878
+        },
+        {
+          "term": " yes",
+          "token_id": 9834,
+          "token": " yes",
+          "score": -2.2519333362579346
+        },
+        {
+          "term": " bet",
+          "token_id": 1274,
+          "token": " bet",
+          "score": -2.8647584915161133
+        },
+        {
+          "term": " professor",
+          "token_id": 14227,
+          "token": " professor",
+          "score": -2.907327651977539
+        },
+        {
+          "term": "C",
+          "token_id": 34,
+          "token": "C",
+          "score": -4.264811038970947
+        },
+        {
+          "term": " community",
+          "token_id": 3942,
+          "token": " community",
+          "score": -4.452549934387207
+        },
+        {
+          "term": " final",
+          "token_id": 1590,
+          "token": " final",
+          "score": -4.977921962738037
+        },
+        {
+          "term": "B",
+          "token_id": 33,
+          "token": "B",
+          "score": -6.157771587371826
+        },
+        {
+          "term": "D",
+          "token_id": 35,
+          "token": "D",
+          "score": -7.272354602813721
+        }
+      ]
+    }
+  ]
+}
