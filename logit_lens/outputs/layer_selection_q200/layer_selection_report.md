@@ -4,7 +4,7 @@ Configuration:
 
 - model: `/home/hanruoshui/.cache/modelscope/hub/models/Qwen/Qwen3-4B-Instruct-2507`
 - target_correct: `200`
-- source_seen: `342`
+- source_seen: `552`
 - baseline_correct_collected: `200`
 - attack_trials: `756`
 - rank: `4`
@@ -166,6 +166,26 @@ Pairwise per-attack subspace similarity is reported as mean singular value of `U
 | Majority | 0.967 | 0.973 | 0.979 | 0.958 | 1.000 | 0.966 |
 | Emotional | 0.976 | 0.973 | 0.972 | 0.964 | 0.966 | 1.000 |
 
+Principal angle spectrum by attack pair:
+
+| attack pair | singular values cos(theta) | principal angles deg | mean cos | max angle |
+| --- | --- | --- | ---: | ---: |
+| Doubt vs Trap | `[0.992, 0.988, 0.979, 0.971]` | `[7.2, 8.8, 11.7, 13.9]` | 0.983 | 13.9 |
+| Doubt vs Authority | `[0.990, 0.986, 0.975, 0.958]` | `[8.0, 9.4, 12.9, 16.6]` | 0.977 | 16.6 |
+| Doubt vs Gaslighting | `[0.981, 0.968, 0.942, 0.927]` | `[11.1, 14.5, 19.5, 22.0]` | 0.955 | 22.0 |
+| Doubt vs Majority | `[0.983, 0.977, 0.957, 0.949]` | `[10.6, 12.3, 16.8, 18.3]` | 0.967 | 18.3 |
+| Doubt vs Emotional | `[0.989, 0.982, 0.969, 0.965]` | `[8.4, 10.9, 14.3, 15.2]` | 0.976 | 15.2 |
+| Trap vs Authority | `[0.992, 0.991, 0.982, 0.969]` | `[7.1, 7.9, 11.0, 14.4]` | 0.983 | 14.4 |
+| Trap vs Gaslighting | `[0.982, 0.965, 0.943, 0.933]` | `[10.8, 15.2, 19.5, 21.1]` | 0.956 | 21.1 |
+| Trap vs Majority | `[0.983, 0.983, 0.967, 0.958]` | `[10.4, 10.6, 14.7, 16.6]` | 0.973 | 16.6 |
+| Trap vs Emotional | `[0.986, 0.979, 0.971, 0.957]` | `[9.6, 11.8, 13.8, 17.0]` | 0.973 | 17.0 |
+| Authority vs Gaslighting | `[0.983, 0.966, 0.944, 0.927]` | `[10.6, 14.9, 19.2, 22.1]` | 0.955 | 22.1 |
+| Authority vs Majority | `[0.989, 0.982, 0.976, 0.968]` | `[8.7, 10.9, 12.6, 14.4]` | 0.979 | 14.4 |
+| Authority vs Emotional | `[0.988, 0.981, 0.964, 0.957]` | `[9.1, 11.2, 15.4, 16.8]` | 0.972 | 16.8 |
+| Gaslighting vs Majority | `[0.979, 0.970, 0.951, 0.934]` | `[11.8, 14.2, 18.0, 21.0]` | 0.958 | 21.0 |
+| Gaslighting vs Emotional | `[0.986, 0.979, 0.966, 0.924]` | `[9.7, 11.7, 15.1, 22.5]` | 0.964 | 22.5 |
+| Majority vs Emotional | `[0.980, 0.978, 0.959, 0.947]` | `[11.4, 12.0, 16.5, 18.7]` | 0.966 | 18.7 |
+
 ### Layer 34 Attack Subspace Similarity
 
 | attack | Doubt | Trap | Authority | Gaslighting | Majority | Emotional |
@@ -177,6 +197,26 @@ Pairwise per-attack subspace similarity is reported as mean singular value of `U
 | Majority | 0.968 | 0.974 | 0.979 | 0.961 | 1.000 | 0.966 |
 | Emotional | 0.978 | 0.974 | 0.974 | 0.967 | 0.966 | 1.000 |
 
+Principal angle spectrum by attack pair:
+
+| attack pair | singular values cos(theta) | principal angles deg | mean cos | max angle |
+| --- | --- | --- | ---: | ---: |
+| Doubt vs Trap | `[0.995, 0.988, 0.982, 0.971]` | `[6.0, 8.9, 11.0, 13.8]` | 0.984 | 13.8 |
+| Doubt vs Authority | `[0.994, 0.987, 0.977, 0.960]` | `[6.4, 9.4, 12.3, 16.2]` | 0.979 | 16.2 |
+| Doubt vs Gaslighting | `[0.988, 0.969, 0.946, 0.933]` | `[8.8, 14.3, 19.0, 21.0]` | 0.959 | 21.0 |
+| Doubt vs Majority | `[0.989, 0.976, 0.959, 0.949]` | `[8.5, 12.6, 16.5, 18.4]` | 0.968 | 18.4 |
+| Doubt vs Emotional | `[0.992, 0.981, 0.972, 0.967]` | `[7.3, 11.1, 13.6, 14.7]` | 0.978 | 14.7 |
+| Trap vs Authority | `[0.995, 0.990, 0.981, 0.969]` | `[5.8, 8.0, 11.2, 14.2]` | 0.984 | 14.2 |
+| Trap vs Gaslighting | `[0.987, 0.966, 0.947, 0.939]` | `[9.1, 14.9, 18.7, 20.1]` | 0.960 | 20.1 |
+| Trap vs Majority | `[0.989, 0.982, 0.966, 0.959]` | `[8.4, 11.0, 14.9, 16.4]` | 0.974 | 16.4 |
+| Trap vs Emotional | `[0.988, 0.978, 0.973, 0.955]` | `[9.0, 12.0, 13.3, 17.2]` | 0.974 | 17.2 |
+| Authority vs Gaslighting | `[0.989, 0.968, 0.947, 0.935]` | `[8.4, 14.6, 18.8, 20.7]` | 0.960 | 20.7 |
+| Authority vs Majority | `[0.992, 0.983, 0.975, 0.967]` | `[7.1, 10.7, 13.0, 14.8]` | 0.979 | 14.8 |
+| Authority vs Emotional | `[0.991, 0.981, 0.965, 0.958]` | `[7.6, 11.1, 15.2, 16.6]` | 0.974 | 16.6 |
+| Gaslighting vs Majority | `[0.986, 0.968, 0.953, 0.938]` | `[9.5, 14.5, 17.6, 20.2]` | 0.961 | 20.2 |
+| Gaslighting vs Emotional | `[0.991, 0.980, 0.966, 0.933]` | `[7.8, 11.6, 14.9, 21.0]` | 0.967 | 21.0 |
+| Majority vs Emotional | `[0.985, 0.975, 0.959, 0.946]` | `[9.8, 12.9, 16.4, 18.9]` | 0.966 | 18.9 |
+
 ### Layer 35 Attack Subspace Similarity
 
 | attack | Doubt | Trap | Authority | Gaslighting | Majority | Emotional |
@@ -187,3 +227,24 @@ Pairwise per-attack subspace similarity is reported as mean singular value of `U
 | Gaslighting | 0.962 | 0.960 | 0.961 | 1.000 | 0.957 | 0.969 |
 | Majority | 0.964 | 0.975 | 0.976 | 0.957 | 1.000 | 0.954 |
 | Emotional | 0.979 | 0.969 | 0.976 | 0.969 | 0.954 | 1.000 |
+
+Principal angle spectrum by attack pair:
+
+| attack pair | singular values cos(theta) | principal angles deg | mean cos | max angle |
+| --- | --- | --- | ---: | ---: |
+| Doubt vs Trap | `[0.995, 0.988, 0.979, 0.976]` | `[5.8, 8.7, 11.8, 12.6]` | 0.985 | 12.6 |
+| Doubt vs Authority | `[0.994, 0.990, 0.987, 0.952]` | `[6.2, 8.3, 9.1, 17.9]` | 0.981 | 17.9 |
+| Doubt vs Gaslighting | `[0.988, 0.978, 0.963, 0.921]` | `[8.8, 12.1, 15.7, 22.9]` | 0.962 | 22.9 |
+| Doubt vs Majority | `[0.987, 0.972, 0.960, 0.935]` | `[9.2, 13.7, 16.2, 20.8]` | 0.964 | 20.8 |
+| Doubt vs Emotional | `[0.992, 0.983, 0.973, 0.967]` | `[7.4, 10.5, 13.3, 14.7]` | 0.979 | 14.7 |
+| Trap vs Authority | `[0.996, 0.989, 0.981, 0.960]` | `[5.2, 8.7, 11.1, 16.3]` | 0.981 | 16.3 |
+| Trap vs Gaslighting | `[0.985, 0.975, 0.948, 0.933]` | `[9.8, 12.9, 18.5, 21.1]` | 0.960 | 21.1 |
+| Trap vs Majority | `[0.990, 0.984, 0.978, 0.947]` | `[7.9, 10.1, 12.0, 18.8]` | 0.975 | 18.8 |
+| Trap vs Emotional | `[0.990, 0.971, 0.968, 0.946]` | `[8.3, 13.8, 14.4, 18.9]` | 0.969 | 18.9 |
+| Authority vs Gaslighting | `[0.989, 0.977, 0.959, 0.919]` | `[8.3, 12.4, 16.6, 23.2]` | 0.961 | 23.2 |
+| Authority vs Majority | `[0.989, 0.978, 0.975, 0.964]` | `[8.7, 12.0, 12.9, 15.5]` | 0.976 | 15.5 |
+| Authority vs Emotional | `[0.991, 0.986, 0.972, 0.954]` | `[7.7, 9.5, 13.7, 17.5]` | 0.976 | 17.5 |
+| Gaslighting vs Majority | `[0.985, 0.965, 0.949, 0.929]` | `[10.0, 15.1, 18.3, 21.8]` | 0.957 | 21.8 |
+| Gaslighting vs Emotional | `[0.992, 0.981, 0.977, 0.929]` | `[7.4, 11.2, 12.4, 21.8]` | 0.969 | 21.8 |
+| Majority vs Emotional | `[0.984, 0.954, 0.947, 0.931]` | `[10.1, 17.4, 18.7, 21.4]` | 0.954 | 21.4 |
+

@@ -170,13 +170,18 @@ def projection_ratio(matrix: torch.Tensor, basis: torch.Tensor) -> float:
     return float((numerator / denominator).mean())
 
 
-def subspace_similarity(basis_a: torch.Tensor, basis_b: torch.Tensor) -> dict[str, float]:
+def subspace_similarity(basis_a: torch.Tensor, basis_b: torch.Tensor) -> dict[str, Any]:
     singular_values = torch.linalg.svdvals(basis_a @ basis_b.t()).clamp(0, 1)
     angles = torch.rad2deg(torch.acos(singular_values))
     return {
         "mean_cosine": float(singular_values.mean()),
+        "min_cosine": float(singular_values.min()),
+        "max_cosine": float(singular_values.max()),
         "min_angle_deg": float(angles.min()),
+        "mean_angle_deg": float(angles.mean()),
         "max_angle_deg": float(angles.max()),
+        "singular_values": [float(value) for value in singular_values],
+        "principal_angles_deg": [float(value) for value in angles],
     }
 
 
@@ -368,6 +373,19 @@ def write_report(path: Path, results: dict[str, Any]) -> None:
         lines.append("| --- | " + " | ".join(["---:"] * len(labels)) + " |")
         for label, row in zip(labels, matrix):
             lines.append("| " + label + " | " + " | ".join(f"{value:.3f}" for value in row) + " |")
+        lines.append("")
+        lines.append("Principal angle spectrum by attack pair:")
+        lines.append("")
+        lines.append("| attack pair | singular values cos(theta) | principal angles deg | mean cos | max angle |")
+        lines.append("| --- | --- | --- | ---: | ---: |")
+        spectrum = results["module4"]["attack_similarity_spectrum"][str(layer)]
+        for pair in spectrum:
+            sv = ", ".join(f"{value:.3f}" for value in pair["singular_values"])
+            angles = ", ".join(f"{value:.1f}" for value in pair["principal_angles_deg"])
+            lines.append(
+                f"| {pair['attack_a']} vs {pair['attack_b']} | "
+                f"`[{sv}]` | `[{angles}]` | {pair['mean_cosine']:.3f} | {pair['max_angle_deg']:.1f} |"
+            )
         lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
 
@@ -576,16 +594,27 @@ def main() -> None:
     delta_margin = [intervened_margin[layer] - baseline_intervention_margin[layer] for layer in range(num_layers)]
 
     attack_similarity: dict[str, list[list[float]]] = {}
+    attack_similarity_spectrum: dict[str, list[dict[str, Any]]] = {}
     readable_attack_labels = [ATTACK_SHORT_NAMES[key] for key in attack_labels]
     for layer in selected_layers:
         matrix = []
+        spectrum = []
         for attack_a in attack_labels:
             row = []
             for attack_b in attack_labels:
                 sim = subspace_similarity(per_attack_subspaces[layer][attack_a], per_attack_subspaces[layer][attack_b])
                 row.append(sim["mean_cosine"])
+                if attack_a < attack_b:
+                    spectrum.append(
+                        {
+                            "attack_a": ATTACK_SHORT_NAMES[attack_a],
+                            "attack_b": ATTACK_SHORT_NAMES[attack_b],
+                            **sim,
+                        }
+                    )
             matrix.append(row)
         attack_similarity[str(layer)] = matrix
+        attack_similarity_spectrum[str(layer)] = spectrum
 
     artifacts = {
         "module1_margin_svg": "figures/module1_layer_margin.svg",
@@ -684,6 +713,7 @@ def main() -> None:
             "shared_subspaces": module4_shared,
             "attack_labels": readable_attack_labels,
             "attack_similarity": attack_similarity,
+            "attack_similarity_spectrum": attack_similarity_spectrum,
         },
     }
     write_json(args.output_dir / "layer_selection_results.json", results)
