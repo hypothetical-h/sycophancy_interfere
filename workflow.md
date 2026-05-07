@@ -1565,3 +1565,239 @@ Overall interpretation:
 - q200 更支持一个保守、低强度、低秩、单层 late-layer hook：`[35], alpha=0.25, rank=2, token_window=16`。
 - 该组合的行为收益很小但方向正确：baseline flip `40.83%` 降到 `40.58%`，`net_gain=+2`，且没有 `correct->wrong`。
 - 当前 ARA hook 还不是强效果；更像一个低副作用的 proof-of-signal。后续要扩大收益，应优先围绕 `[35], alpha=0.25, rank=1/2, token_window=16/32` 做更细 alpha 和 calibration 策略，而不是加更多 late layers 或更大 rank。
+
+### q200 sweep visualizations
+
+补充 sweep 可视化脚本：
+
+```text
+scripts/plot_rank_ara_sweep.py
+```
+
+生成命令：
+
+```bash
+/home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  scripts/plot_rank_ara_sweep.py \
+  --results outputs/rank_ara_hyper_sweep_q200_focus/sweep_results.json \
+  --output-dir outputs/rank_ara_hyper_sweep_q200_focus/figures_clear
+```
+
+图的横坐标说明：
+
+- `layers_*` 图：横坐标是 layer 配置，例如 `[35]`, `[33]`, `[31,32,33]`。
+- `alpha_*` 图：横坐标是 alpha，例如 `0.25`, `0.5`, `1.0`。
+- `rank_*` 图：横坐标是 subspace rank，例如 `1`, `2`, `4`。
+- `token_window_*` 图：横坐标是 token window，例如 `4`, `16`, `32`。
+
+每个 stage 有三张图：
+
+- `*_transitions.svg`: `net_gain`, `wrong->correct`, `correct->wrong`。
+- `*_margin.svg`: `mean_delta_margin = mean(margin_intervened - margin_baseline_attack)`。
+- `*_flip_rate.svg`: baseline flip rate vs ARA flip rate。
+
+输出图：
+
+```text
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/layers_transitions.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/layers_margin.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/layers_flip_rate.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/alpha_transitions.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/alpha_margin.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/alpha_flip_rate.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/rank_transitions.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/rank_margin.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/rank_flip_rate.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/token_window_transitions.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/token_window_margin.svg
+outputs/rank_ara_hyper_sweep_q200_focus/figures_clear/token_window_flip_rate.svg
+```
+
+读图重点：
+
+- transition 图里，`net_gain > 0` 才表示行为净收益；`correct->wrong` 是副作用，越低越好。
+- margin 图里，`mean_delta_margin > 0` 表示局部 next-token readout 往正确答案方向移动，但它不等价于最终回答改善。
+- flip-rate 图里，ARA flip rate 低于 baseline flip rate 才是整体攻击成功率下降。
+
+### 4-module analysis for q200 best config
+
+针对 q200 最优配置补跑 4-module 分析：
+
+```text
+layers = [35]
+alpha = 0.25
+rank = 2
+token_window = 16
+```
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  logit_lens/run_layer_selection_experiment.py \
+  --target-correct 200 \
+  --max-source 650 \
+  --rank 2 \
+  --token-window 16 \
+  --selected-layers 35 \
+  --select-layer-count 1 \
+  --calibration-trials 120 \
+  --ablation-strength 0.25 \
+  --device-map single \
+  --output-dir logit_lens/outputs/layer_selection_q200_best35
+```
+
+输出文件：
+
+```text
+logit_lens/outputs/layer_selection_q200_best35/layer_selection_report.md
+logit_lens/outputs/layer_selection_q200_best35/layer_selection_results.json
+logit_lens/outputs/layer_selection_q200_best35/figures/module1_layer_margin.svg
+logit_lens/outputs/layer_selection_q200_best35/figures/module2_intervention_margin.svg
+logit_lens/outputs/layer_selection_q200_best35/figures/module3_delta_energy.svg
+logit_lens/outputs/layer_selection_q200_best35/figures/module4_attack_subspace_similarity_layer_35.svg
+```
+
+Module 1: layer-wise logit margin
+
+```text
+margin = logit(correct) - logit(user_wrong)
+```
+
+关键层：
+
+| layer | base margin | attack margin | attack-base |
+| ---: | ---: | ---: | ---: |
+| 31 | 12.7394 | -0.6363 | -13.3757 |
+| 32 | 12.8342 | 0.3895 | -12.4447 |
+| 33 | 13.3520 | 1.5367 | -11.8153 |
+| 34 | 10.0477 | 1.3291 | -8.7186 |
+| 35 | 20.0656 | 5.2209 | -14.8447 |
+
+解释：attack 会显著降低 late layers 的 `correct - wrong` margin。layer 35 的 base margin 最高，但 attack 后仍有明显下降。
+
+Module 2: intervention pre/post margin
+
+固定只 hook layer 35，因此只有 layer 35 的 logit-lens margin 发生变化：
+
+| layer | baseline attack margin | intervened attack margin | delta |
+| ---: | ---: | ---: | ---: |
+| 35 | 5.2209 | 5.3490 | +0.1281 |
+
+解释：最优 q200 配置确实把 layer 35 的 next-token readout 朝正确答案方向推了一点，但幅度很小。这和 behavioral `net_gain=+2` 一致：有信号，但不是强效果。
+
+Module 3: layer-wise hidden shift
+
+关键层：
+
+| layer | mean \|\|delta h\|\| | cosine(base, attack) |
+| ---: | ---: | ---: |
+| 31 | 108.6549 | 0.9072 |
+| 32 | 121.7102 | 0.9163 |
+| 33 | 139.1978 | 0.9291 |
+| 34 | 166.4872 | 0.9449 |
+| 35 | 94.5299 | 0.8172 |
+
+解释：attack-induced hidden shift 在 31-35 都很强，34 的范数最大；但 q200 behavioral sweep 说明强 shift 层不一定适合强 removal。layer 35 的 cosine 更低，说明方向改变更明显，同时单层低强度干预副作用更低。
+
+Module 4: subspace quality
+
+Layer 35 rank-2 shared subspace:
+
+```text
+matrix_shape = [1920, 2560]
+explained_energy = 0.3328
+projection_norm_ratio = 0.4581
+```
+
+按 attack type 的 rank-2 subspace principal-angle spectrum 高度一致：
+
+| attack pair | singular values | principal angles deg | mean cos |
+| --- | --- | --- | ---: |
+| Doubt vs Trap | `[0.994, 0.975]` | `[6.1, 12.8]` | 0.985 |
+| Doubt vs Authority | `[0.994, 0.985]` | `[6.2, 10.0]` | 0.990 |
+| Trap vs Majority | `[0.990, 0.985]` | `[8.1, 10.0]` | 0.987 |
+| Authority vs Emotional | `[0.991, 0.988]` | `[7.5, 8.7]` | 0.990 |
+| Majority vs Emotional | `[0.982, 0.961]` | `[11.0, 16.1]` | 0.971 |
+
+解释：layer 35 的 rank-2 attack subspace 在不同 attack type 之间非常一致，shared ARA subspace 有几何依据。当前收益弱，问题更可能在 hook 形式/强度/calibration，而不是 attack 类型之间完全不共享方向。
+
+### layer × attack subspace similarity
+
+补做 workflow 原计划中的 cross-layer subspace similarity：
+
+> 再多做一个 layer × attack subspace similarity，观察不同 layer 的 attack subspace 是否相似，同样画可视化图。
+
+这次不只看同一层内部的 `attack × attack`，而是固定 late layers `[31,32,33,34,35]`，对每个 attack type 分别比较不同 layer 的 rank-2 attack subspace：
+
+```text
+U[layer, attack] = rank-2 PCA subspace of h_attack - h_base
+similarity(layer_i, layer_j, attack)
+  = mean singular value of U[layer_i, attack] @ U[layer_j, attack]^T
+```
+
+同时做一个 summary heatmap：
+
+```text
+summary[layer, attack]
+  = average similarity between U[layer, attack] and U[other_layer, attack]
+```
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  logit_lens/run_layer_selection_experiment.py \
+  --target-correct 200 \
+  --max-source 650 \
+  --rank 2 \
+  --token-window 16 \
+  --selected-layers 31,32,33,34,35 \
+  --select-layer-count 5 \
+  --calibration-trials 120 \
+  --ablation-strength 0.25 \
+  --device-map single \
+  --output-dir logit_lens/outputs/layer_attack_similarity_q200_l31_35
+```
+
+新增图：
+
+```text
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_attack_cross_layer_similarity.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_doubt.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_trap.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_authority.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_gaslighting.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_majority.svg
+logit_lens/outputs/layer_attack_similarity_q200_l31_35/figures/module4_layer_similarity_attack_emotional.svg
+```
+
+Layer × attack summary matrix:
+
+| layer | Doubt | Trap | Authority | Gaslighting | Majority | Emotional | row mean |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 31 | 0.6836 | 0.6890 | 0.6860 | 0.6798 | 0.6688 | 0.6781 | 0.6809 |
+| 32 | 0.7126 | 0.7198 | 0.7153 | 0.7119 | 0.6930 | 0.7100 | 0.7104 |
+| 33 | 0.6856 | 0.7098 | 0.7390 | 0.6820 | 0.6498 | 0.7417 | 0.7013 |
+| 34 | 0.5449 | 0.5547 | 0.5781 | 0.5121 | 0.4875 | 0.5757 | 0.5422 |
+| 35 | 0.4145 | 0.4516 | 0.4262 | 0.4495 | 0.4136 | 0.4363 | 0.4320 |
+
+Adjacent-layer similarity by attack type:
+
+| attack | 31-32 | 32-33 | 33-34 | 34-35 | mean adjacent |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Doubt | 0.9237 | 0.9173 | 0.5723 | 0.4269 | 0.7100 |
+| Trap | 0.9208 | 0.9195 | 0.6082 | 0.4524 | 0.7252 |
+| Authority | 0.9217 | 0.9133 | 0.7149 | 0.4052 | 0.7388 |
+| Gaslighting | 0.9186 | 0.9168 | 0.5165 | 0.4382 | 0.6975 |
+| Majority | 0.9178 | 0.9103 | 0.4739 | 0.4195 | 0.6804 |
+| Emotional | 0.9196 | 0.8981 | 0.7363 | 0.4112 | 0.7413 |
+
+Interpretation:
+
+- 31-32 和 32-33 的同 attack subspace 很相似，mean cosine 基本在 `0.90+`。
+- 33-34 开始明显下降，尤其 Majority/Gaslighting/Doubt 降到 `0.47-0.57`。
+- 34-35 进一步断开，所有 attack type 都只有约 `0.41-0.45`。
+- 因此 late layers 并不是一个连续同质的 ARA subspace 区间；31-33 更像一组，35 更像另一种读出前的末层几何。
+- 这解释了 q200 sweep 中多层 `[33,34,35]` 副作用大的原因：它把几何上并不完全同质的 subspace 一起 remove，容易伤害正确答案 readout。
+- 后续 layer sweep 不应默认连续多层 late hook；更合理的是单层 `[35]`，或把 `[31,32,33]` 和 `[35]` 分开设计不同 strength/rank。

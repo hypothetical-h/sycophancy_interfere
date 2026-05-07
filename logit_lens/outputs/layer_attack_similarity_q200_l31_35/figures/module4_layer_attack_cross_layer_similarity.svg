@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="614" height="506" viewBox="0 0 614 506">
+<rect width="100%" height="100%" fill="#fbfbf8"/>
+<text x="24" y="32" font-family="monospace" font-size="18" fill="#111">Module 4: cross-layer subspace similarity by attack</text>
+<text x="126" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 126,74)">Doubt</text>
+<text x="200" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 200,74)">Trap</text>
+<text x="274" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 274,74)">Authority</text>
+<text x="348" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 348,74)">Gaslighting</text>
+<text x="422" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 422,74)">Majority</text>
+<text x="496" y="74" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 496,74)">Emotional</text>
+<text x="18" y="128" font-family="monospace" font-size="12" fill="#333">31</text>
+<text x="18" y="202" font-family="monospace" font-size="12" fill="#333">32</text>
+<text x="18" y="276" font-family="monospace" font-size="12" fill="#333">33</text>
+<text x="18" y="350" font-family="monospace" font-size="12" fill="#333">34</text>
+<text x="18" y="424" font-family="monospace" font-size="12" fill="#333">35</text>
+<rect x="120" y="86" width="72" height="72" fill="rgb(152,197,125)" stroke="#fff"/>
+<text x="133" y="126" font-family="monospace" font-size="12" fill="#111">0.684</text>
+<rect x="194" y="86" width="72" height="72" fill="rgb(151,196,124)" stroke="#fff"/>
+<text x="207" y="126" font-family="monospace" font-size="12" fill="#111">0.689</text>
+<rect x="268" y="86" width="72" height="72" fill="rgb(152,196,125)" stroke="#fff"/>
+<text x="281" y="126" font-family="monospace" font-size="12" fill="#111">0.686</text>
+<rect x="342" y="86" width="72" height="72" fill="rgb(153,197,126)" stroke="#fff"/>
+<text x="355" y="126" font-family="monospace" font-size="12" fill="#111">0.680</text>
+<rect x="416" y="86" width="72" height="72" fill="rgb(154,198,127)" stroke="#fff"/>
+<text x="429" y="126" font-family="monospace" font-size="12" fill="#111">0.669</text>
+<rect x="490" y="86" width="72" height="72" fill="rgb(153,197,126)" stroke="#fff"/>
+<text x="503" y="126" font-family="monospace" font-size="12" fill="#111">0.678</text>
+<rect x="120" y="160" width="72" height="72" fill="rgb(148,195,120)" stroke="#fff"/>
+<text x="133" y="200" font-family="monospace" font-size="12" fill="#111">0.713</text>
+<rect x="194" y="160" width="72" height="72" fill="rgb(147,194,119)" stroke="#fff"/>
+<text x="207" y="200" font-family="monospace" font-size="12" fill="#111">0.720</text>
+<rect x="268" y="160" width="72" height="72" fill="rgb(147,194,120)" stroke="#fff"/>
+<text x="281" y="200" font-family="monospace" font-size="12" fill="#111">0.715</text>
+<rect x="342" y="160" width="72" height="72" fill="rgb(148,195,121)" stroke="#fff"/>
+<text x="355" y="200" font-family="monospace" font-size="12" fill="#111">0.712</text>
+<rect x="416" y="160" width="72" height="72" fill="rgb(151,196,124)" stroke="#fff"/>
+<text x="429" y="200" font-family="monospace" font-size="12" fill="#111">0.693</text>
+<rect x="490" y="160" width="72" height="72" fill="rgb(148,195,121)" stroke="#fff"/>
+<text x="503" y="200" font-family="monospace" font-size="12" fill="#111">0.710</text>
+<rect x="120" y="234" width="72" height="72" fill="rgb(152,197,125)" stroke="#fff"/>
+<text x="133" y="274" font-family="monospace" font-size="12" fill="#111">0.686</text>
+<rect x="194" y="234" width="72" height="72" fill="rgb(148,195,121)" stroke="#fff"/>
+<text x="207" y="274" font-family="monospace" font-size="12" fill="#111">0.710</text>
+<rect x="268" y="234" width="72" height="72" fill="rgb(144,193,116)" stroke="#fff"/>
+<text x="281" y="274" font-family="monospace" font-size="12" fill="#111">0.739</text>
+<rect x="342" y="234" width="72" height="72" fill="rgb(152,197,125)" stroke="#fff"/>
+<text x="355" y="274" font-family="monospace" font-size="12" fill="#111">0.682</text>
+<rect x="416" y="234" width="72" height="72" fill="rgb(157,199,131)" stroke="#fff"/>
+<text x="429" y="274" font-family="monospace" font-size="12" fill="#111">0.650</text>
+<rect x="490" y="234" width="72" height="72" fill="rgb(143,193,116)" stroke="#fff"/>
+<text x="503" y="274" font-family="monospace" font-size="12" fill="#111">0.742</text>
+<rect x="120" y="308" width="72" height="72" fill="rgb(173,206,147)" stroke="#fff"/>
+<text x="133" y="348" font-family="monospace" font-size="12" fill="#111">0.545</text>
+<rect x="194" y="308" width="72" height="72" fill="rgb(171,206,146)" stroke="#fff"/>
+<text x="207" y="348" font-family="monospace" font-size="12" fill="#111">0.555</text>
+<rect x="268" y="308" width="72" height="72" fill="rgb(168,204,142)" stroke="#fff"/>
+<text x="281" y="348" font-family="monospace" font-size="12" fill="#111">0.578</text>
+<rect x="342" y="308" width="72" height="72" fill="rgb(178,209,153)" stroke="#fff"/>
+<text x="355" y="348" font-family="monospace" font-size="12" fill="#111">0.512</text>
+<rect x="416" y="308" width="72" height="72" fill="rgb(181,210,156)" stroke="#fff"/>
+<text x="429" y="348" font-family="monospace" font-size="12" fill="#111">0.488</text>
+<rect x="490" y="308" width="72" height="72" fill="rgb(168,204,142)" stroke="#fff"/>
+<text x="503" y="348" font-family="monospace" font-size="12" fill="#111">0.576</text>
+<rect x="120" y="382" width="72" height="72" fill="rgb(192,215,168)" stroke="#fff"/>
+<text x="133" y="422" font-family="monospace" font-size="12" fill="#111">0.415</text>
+<rect x="194" y="382" width="72" height="72" fill="rgb(187,213,162)" stroke="#fff"/>
+<text x="207" y="422" font-family="monospace" font-size="12" fill="#111">0.452</text>
+<rect x="268" y="382" width="72" height="72" fill="rgb(191,215,166)" stroke="#fff"/>
+<text x="281" y="422" font-family="monospace" font-size="12" fill="#111">0.426</text>
+<rect x="342" y="382" width="72" height="72" fill="rgb(187,213,163)" stroke="#fff"/>
+<text x="355" y="422" font-family="monospace" font-size="12" fill="#111">0.450</text>
+<rect x="416" y="382" width="72" height="72" fill="rgb(192,216,168)" stroke="#fff"/>
+<text x="429" y="422" font-family="monospace" font-size="12" fill="#111">0.414</text>
+<rect x="490" y="382" width="72" height="72" fill="rgb(189,214,165)" stroke="#fff"/>
+<text x="503" y="422" font-family="monospace" font-size="12" fill="#111">0.436</text>
+</svg>

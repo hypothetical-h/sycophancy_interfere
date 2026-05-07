@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="490.0" y="28" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700">alpha: mean delta margin</text>
+<text x="18" y="221.5" transform="rotate(-90 18 221.5)" text-anchor="middle" font-family="sans-serif" font-size="12">logit margin</text>
+<line x1="80" y1="58" x2="80" y2="385" stroke="#555"/>
+<line x1="80" y1="362.45" x2="950" y2="362.45" stroke="#888" stroke-dasharray="4 4"/>
+<text x="70" y="63" text-anchor="end" font-family="monospace" font-size="11">0.10</text>
+<text x="70" y="358.44827586206895" text-anchor="end" font-family="monospace" font-size="11">0</text>
+<text x="70" y="385" text-anchor="end" font-family="monospace" font-size="11">-0.01</text>
+<rect x="214.00" y="156.93" width="18.04" height="205.52" fill="#7c3aed"><title>L35 a0.25 r4 tw16: mean_delta_margin=0.0705</title></rect>
+<text x="225.00" y="478" transform="rotate(-35 225.00 478)" text-anchor="end" font-family="sans-serif" font-size="10">L35 a0.25 r4 tw16</text>
+<rect x="504.00" y="80.55" width="18.04" height="281.90" fill="#7c3aed"><title>L35 a0.5 r4 tw16: mean_delta_margin=0.0967</title></rect>
+<text x="515.00" y="478" transform="rotate(-35 515.00 478)" text-anchor="end" font-family="sans-serif" font-size="10">L35 a0.5 r4 tw16</text>
+<rect x="794.00" y="333.59" width="18.04" height="28.86" fill="#7c3aed"><title>L35 a1.0 r4 tw16: mean_delta_margin=0.0099</title></rect>
+<text x="805.00" y="478" transform="rotate(-35 805.00 478)" text-anchor="end" font-family="sans-serif" font-size="10">L35 a1.0 r4 tw16</text>
+<rect x="80" y="498" width="12" height="12" fill="#7c3aed"/>
+<text x="97" y="508" font-family="sans-serif" font-size="12">mean_delta_margin</text>
+</svg>

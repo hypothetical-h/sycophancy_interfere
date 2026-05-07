@@ -274,6 +274,41 @@ def svg_heatmap(path: Path, title: str, labels: list[str], matrix: list[list[flo
     path.write_text("\n".join(parts), encoding="utf-8")
 
 
+def svg_rect_heatmap(path: Path, title: str, row_labels: list[str], col_labels: list[str], matrix: list[list[float]]) -> None:
+    cell = 74
+    margin_left = 120
+    margin_top = 86
+    width = margin_left + cell * len(col_labels) + 50
+    height = margin_top + cell * len(row_labels) + 50
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<rect width="100%" height="100%" fill="#fbfbf8"/>',
+        f'<text x="24" y="32" font-family="monospace" font-size="18" fill="#111">{title}</text>',
+    ]
+    for i, label in enumerate(col_labels):
+        short = label[:11]
+        x = margin_left + i * cell + 6
+        parts.append(
+            f'<text x="{x}" y="{margin_top - 12}" font-family="monospace" font-size="10" fill="#333" '
+            f'transform="rotate(-35 {x},{margin_top - 12})">{short}</text>'
+        )
+    for i, label in enumerate(row_labels):
+        parts.append(f'<text x="18" y="{margin_top + i * cell + 42}" font-family="monospace" font-size="12" fill="#333">{label}</text>')
+    for r, row in enumerate(matrix):
+        for c, value in enumerate(row):
+            value = max(0.0, min(1.0, value))
+            red = int(255 - 150 * value)
+            green = int(245 - 70 * value)
+            blue = int(235 - 160 * value)
+            x = margin_left + c * cell
+            y = margin_top + r * cell
+            parts.append(f'<rect x="{x}" y="{y}" width="{cell-2}" height="{cell-2}" fill="rgb({red},{green},{blue})" stroke="#fff"/>')
+            parts.append(f'<text x="{x+13}" y="{y+40}" font-family="monospace" font-size="12" fill="#111">{value:.3f}</text>')
+    parts.append("</svg>")
+    ensure_parent(path)
+    path.write_text("\n".join(parts), encoding="utf-8")
+
+
 def normalize(values: list[float]) -> list[float]:
     lo, hi = min(values), max(values)
     if math.isclose(lo, hi):
@@ -401,6 +436,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--rank", type=int, default=4)
     parser.add_argument("--token-window", type=int, default=8)
     parser.add_argument("--select-layer-count", type=int, default=3)
+    parser.add_argument("--selected-layers", default="", help="Optional comma-separated fixed layer list for modules 2/4.")
     parser.add_argument("--calibration-trials", type=int, default=600)
     parser.add_argument("--max-new-tokens", type=int, default=32)
     parser.add_argument("--ablation-strength", type=float, default=1.0)
@@ -439,6 +475,7 @@ def main() -> None:
     rows = load_dataset(args.dataset, limit=args.max_source, seed=args.seed)
     base_results = []
     kept_items = []
+    scanned_items = []
     source_seen = 0
     for idx, item in enumerate(rows, 1):
         source_seen = idx
@@ -457,6 +494,7 @@ def main() -> None:
             "turn1_correct": pred == correct,
         }
         base_results.append(result)
+        scanned_items.append(item)
         if result["turn1_correct"]:
             kept_items.append(item)
         if len(kept_items) >= args.target_correct:
@@ -464,9 +502,7 @@ def main() -> None:
         if idx % 50 == 0:
             print(f"base scan: source={idx}, correct={len(kept_items)}/{args.target_correct}")
 
-    # build_attack_tasks expects base_results aligned with rows; filter to scanned rows only.
-    scanned_rows = rows[:source_seen]
-    tasks = build_attack_tasks(scanned_rows, base_results, args.seed)
+    tasks = build_attack_tasks(scanned_items, base_results, args.seed)
     tasks = [
         task for task in tasks
         if task["correct_answer"] in option_ids and task["incorrect_target"] in option_ids
@@ -544,7 +580,10 @@ def main() -> None:
     margin_drop = [base_margin[layer] - attack_margin[layer] for layer in range(num_layers)]
     delta_energy = [delta_norm_sums[layer] / layer_counts[layer] for layer in range(num_layers)]
     cosine = [cosine_sums[layer] / layer_counts[layer] for layer in range(num_layers)]
-    selected_layers = select_layers(margin_drop, delta_energy, args.select_layer_count)
+    if args.selected_layers.strip():
+        selected_layers = [int(value) for value in args.selected_layers.split(",") if value.strip()]
+    else:
+        selected_layers = select_layers(margin_drop, delta_energy, args.select_layer_count)
     print(f"selected layers: {selected_layers}")
 
     shared_subspaces = {}
@@ -595,6 +634,8 @@ def main() -> None:
 
     attack_similarity: dict[str, list[list[float]]] = {}
     attack_similarity_spectrum: dict[str, list[dict[str, Any]]] = {}
+    layer_similarity_by_attack: dict[str, list[list[float]]] = {}
+    layer_attack_similarity_summary: list[list[float]] = []
     readable_attack_labels = [ATTACK_SHORT_NAMES[key] for key in attack_labels]
     for layer in selected_layers:
         matrix = []
@@ -615,6 +656,29 @@ def main() -> None:
             matrix.append(row)
         attack_similarity[str(layer)] = matrix
         attack_similarity_spectrum[str(layer)] = spectrum
+
+    layer_labels = [str(layer) for layer in selected_layers]
+    for attack_type in attack_labels:
+        matrix = []
+        for layer_a in selected_layers:
+            row = []
+            for layer_b in selected_layers:
+                sim = subspace_similarity(per_attack_subspaces[layer_a][attack_type], per_attack_subspaces[layer_b][attack_type])
+                row.append(sim["mean_cosine"])
+            matrix.append(row)
+        layer_similarity_by_attack[ATTACK_SHORT_NAMES[attack_type]] = matrix
+
+    for layer_idx, layer in enumerate(selected_layers):
+        row = []
+        for attack_type in attack_labels:
+            attack_name = ATTACK_SHORT_NAMES[attack_type]
+            values = [
+                layer_similarity_by_attack[attack_name][layer_idx][other_idx]
+                for other_idx, other_layer in enumerate(selected_layers)
+                if other_layer != layer
+            ]
+            row.append(mean(values) if values else 1.0)
+        layer_attack_similarity_summary.append(row)
 
     artifacts = {
         "module1_margin_svg": "figures/module1_layer_margin.svg",
@@ -659,6 +723,24 @@ def main() -> None:
             readable_attack_labels,
             attack_similarity[str(layer)],
         )
+    artifacts["module4_layer_attack_summary_svg"] = "figures/module4_layer_attack_cross_layer_similarity.svg"
+    svg_rect_heatmap(
+        args.output_dir / artifacts["module4_layer_attack_summary_svg"],
+        "Module 4: cross-layer subspace similarity by attack",
+        layer_labels,
+        readable_attack_labels,
+        layer_attack_similarity_summary,
+    )
+    for attack_name, matrix in layer_similarity_by_attack.items():
+        safe_attack = attack_name.lower().replace(" ", "_")
+        name = f"figures/module4_layer_similarity_attack_{safe_attack}.svg"
+        artifacts[f"module4_layer_similarity_{safe_attack}_svg"] = name
+        svg_heatmap(
+            args.output_dir / name,
+            f"Module 4: layer subspace similarity, {attack_name}",
+            layer_labels,
+            matrix,
+        )
 
     results = {
         "config": {
@@ -670,6 +752,7 @@ def main() -> None:
             "rank": args.rank,
             "token_window": args.token_window,
             "select_layer_count": args.select_layer_count,
+            "selected_layers_override": args.selected_layers,
             "calibration_trials": max_calibration,
             "ablation_strength": args.ablation_strength,
             "device_map": args.device_map,
@@ -714,6 +797,12 @@ def main() -> None:
             "attack_labels": readable_attack_labels,
             "attack_similarity": attack_similarity,
             "attack_similarity_spectrum": attack_similarity_spectrum,
+            "layer_similarity_by_attack": layer_similarity_by_attack,
+            "layer_attack_similarity_summary": {
+                "layer_labels": layer_labels,
+                "attack_labels": readable_attack_labels,
+                "matrix": layer_attack_similarity_summary,
+            },
         },
     }
     write_json(args.output_dir / "layer_selection_results.json", results)

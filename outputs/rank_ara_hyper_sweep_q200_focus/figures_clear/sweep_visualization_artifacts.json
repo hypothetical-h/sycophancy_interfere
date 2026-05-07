@@ -1,0 +1,14 @@
+{
+  "layers_transitions_svg": "figures_clear/layers_transitions.svg",
+  "layers_margin_svg": "figures_clear/layers_margin.svg",
+  "layers_flip_rate_svg": "figures_clear/layers_flip_rate.svg",
+  "alpha_transitions_svg": "figures_clear/alpha_transitions.svg",
+  "alpha_margin_svg": "figures_clear/alpha_margin.svg",
+  "alpha_flip_rate_svg": "figures_clear/alpha_flip_rate.svg",
+  "rank_transitions_svg": "figures_clear/rank_transitions.svg",
+  "rank_margin_svg": "figures_clear/rank_margin.svg",
+  "rank_flip_rate_svg": "figures_clear/rank_flip_rate.svg",
+  "token_window_transitions_svg": "figures_clear/token_window_transitions.svg",
+  "token_window_margin_svg": "figures_clear/token_window_margin.svg",
+  "token_window_flip_rate_svg": "figures_clear/token_window_flip_rate.svg"
+}

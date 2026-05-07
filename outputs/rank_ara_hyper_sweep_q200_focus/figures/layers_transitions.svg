@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" viewBox="0 0 980 520">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="490.0" y="28" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="700">layers: transition counts</text>
+<text x="18" y="221.5" transform="rotate(-90 18 221.5)" text-anchor="middle" font-family="sans-serif" font-size="12">count</text>
+<line x1="80" y1="58" x2="80" y2="385" stroke="#555"/>
+<line x1="80" y1="233.25" x2="950" y2="233.25" stroke="#888" stroke-dasharray="4 4"/>
+<text x="70" y="63" text-anchor="end" font-family="monospace" font-size="11">164.12</text>
+<text x="70" y="229.2456896551724" text-anchor="end" font-family="monospace" font-size="11">0</text>
+<text x="70" y="385" text-anchor="end" font-family="monospace" font-size="11">-142.12</text>
+<rect x="155.75" y="233.25" width="18.04" height="10.68" fill="#175e8a"><title>L35 a1.0 r4 tw16: net_gain=-10.0000</title></rect>
+<rect x="177.75" y="232.18" width="18.04" height="1.07" fill="#166534"><title>L35 a1.0 r4 tw16: wrong_to_correct=1.0000</title></rect>
+<rect x="199.75" y="221.50" width="18.04" height="11.75" fill="#b91c1c"><title>L35 a1.0 r4 tw16: correct_to_wrong=11.0000</title></rect>
+<text x="188.75" y="478" transform="rotate(-35 188.75 478)" text-anchor="end" font-family="sans-serif" font-size="10">L35 a1.0 r4 tw16</text>
+<rect x="373.25" y="233.25" width="18.04" height="43.78" fill="#175e8a"><title>L33 a1.0 r4 tw16: net_gain=-41.0000</title></rect>
+<rect x="395.25" y="221.50" width="18.04" height="11.75" fill="#166534"><title>L33 a1.0 r4 tw16: wrong_to_correct=11.0000</title></rect>
+<rect x="417.25" y="177.72" width="18.04" height="55.53" fill="#b91c1c"><title>L33 a1.0 r4 tw16: correct_to_wrong=52.0000</title></rect>
+<text x="406.25" y="478" transform="rotate(-35 406.25 478)" text-anchor="end" font-family="sans-serif" font-size="10">L33 a1.0 r4 tw16</text>
+<rect x="590.75" y="233.25" width="18.04" height="65.14" fill="#175e8a"><title>L31-32-33 a1.0 r4 tw16: net_gain=-61.0000</title></rect>
+<rect x="612.75" y="223.64" width="18.04" height="9.61" fill="#166534"><title>L31-32-33 a1.0 r4 tw16: wrong_to_correct=9.0000</title></rect>
+<rect x="634.75" y="158.50" width="18.04" height="74.75" fill="#b91c1c"><title>L31-32-33 a1.0 r4 tw16: correct_to_wrong=70.0000</title></rect>
+<text x="623.75" y="478" transform="rotate(-35 623.75 478)" text-anchor="end" font-family="sans-serif" font-size="10">L31-32-33 a1.0 r4 tw16</text>
+<rect x="808.25" y="233.25" width="18.04" height="129.20" fill="#175e8a"><title>L33-34-35 a1.0 r4 tw16: net_gain=-121.0000</title></rect>
+<rect x="830.25" y="209.75" width="18.04" height="23.49" fill="#166534"><title>L33-34-35 a1.0 r4 tw16: wrong_to_correct=22.0000</title></rect>
+<rect x="852.25" y="80.55" width="18.04" height="152.69" fill="#b91c1c"><title>L33-34-35 a1.0 r4 tw16: correct_to_wrong=143.0000</title></rect>
+<text x="841.25" y="478" transform="rotate(-35 841.25 478)" text-anchor="end" font-family="sans-serif" font-size="10">L33-34-35 a1.0 r4 tw16</text>
+<rect x="80" y="498" width="12" height="12" fill="#175e8a"/>
+<text x="97" y="508" font-family="sans-serif" font-size="12">net_gain</text>
+<rect x="171" y="498" width="12" height="12" fill="#166534"/>
+<text x="188" y="508" font-family="sans-serif" font-size="12">wrong_to_correct</text>
+<rect x="318" y="498" width="12" height="12" fill="#b91c1c"/>
+<text x="335" y="508" font-family="sans-serif" font-size="12">correct_to_wrong</text>
+</svg>

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="538" height="478" viewBox="0 0 538 478">
+<rect width="100%" height="100%" fill="#fbfbf8"/>
+<text x="24" y="32" font-family="monospace" font-size="18" fill="#111">Module 4: attack subspace similarity, layer 34</text>
+<text x="156" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 156,68)">Doubt</text>
+<text x="12" y="114" font-family="monospace" font-size="11" fill="#333">Doubt</text>
+<text x="214" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 214,68)">Trap</text>
+<text x="12" y="172" font-family="monospace" font-size="11" fill="#333">Trap</text>
+<text x="272" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 272,68)">Authority</text>
+<text x="12" y="230" font-family="monospace" font-size="11" fill="#333">Authority</text>
+<text x="330" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 330,68)">Gaslighting</text>
+<text x="12" y="288" font-family="monospace" font-size="11" fill="#333">Gaslighting</text>
+<text x="388" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 388,68)">Majority</text>
+<text x="12" y="346" font-family="monospace" font-size="11" fill="#333">Majority</text>
+<text x="446" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 446,68)">Emotional</text>
+<text x="12" y="404" font-family="monospace" font-size="11" fill="#333">Emotional</text>
+<rect x="150" y="80" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="161" y="113" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="208" y="80" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="219" y="113" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="266" y="80" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="277" y="113" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="324" y="80" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="335" y="113" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="382" y="80" width="56" height="56" fill="rgb(107,176,78)" stroke="#fff"/>
+<text x="393" y="113" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="440" y="80" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="451" y="113" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="150" y="138" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="161" y="171" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="208" y="138" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="219" y="171" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="266" y="138" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="277" y="171" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="324" y="138" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="335" y="171" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="382" y="138" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="393" y="171" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="440" y="138" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="451" y="171" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="150" y="196" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="161" y="229" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="208" y="196" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="219" y="229" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="266" y="196" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="277" y="229" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="324" y="196" width="56" height="56" fill="rgb(107,176,78)" stroke="#fff"/>
+<text x="335" y="229" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="382" y="196" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="393" y="229" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="440" y="196" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="451" y="229" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="150" y="254" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="161" y="287" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="208" y="254" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="219" y="287" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="266" y="254" width="56" height="56" fill="rgb(107,176,78)" stroke="#fff"/>
+<text x="277" y="287" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="324" y="254" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="335" y="287" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="382" y="254" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="393" y="287" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="440" y="254" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="451" y="287" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="150" y="312" width="56" height="56" fill="rgb(107,176,78)" stroke="#fff"/>
+<text x="161" y="345" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="208" y="312" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="219" y="345" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="266" y="312" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="277" y="345" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="324" y="312" width="56" height="56" fill="rgb(108,176,78)" stroke="#fff"/>
+<text x="335" y="345" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="382" y="312" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="393" y="345" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="440" y="312" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="451" y="345" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="150" y="370" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="161" y="403" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="208" y="370" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="219" y="403" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="266" y="370" width="56" height="56" fill="rgb(106,175,76)" stroke="#fff"/>
+<text x="277" y="403" font-family="monospace" font-size="12" fill="#111">0.99</text>
+<rect x="324" y="370" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="335" y="403" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="382" y="370" width="56" height="56" fill="rgb(107,176,77)" stroke="#fff"/>
+<text x="393" y="403" font-family="monospace" font-size="12" fill="#111">0.98</text>
+<rect x="440" y="370" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="451" y="403" font-family="monospace" font-size="12" fill="#111">1.00</text>
+</svg>
