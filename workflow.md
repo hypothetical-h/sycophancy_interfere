@@ -1801,3 +1801,326 @@ Interpretation:
 - 因此 late layers 并不是一个连续同质的 ARA subspace 区间；31-33 更像一组，35 更像另一种读出前的末层几何。
 - 这解释了 q200 sweep 中多层 `[33,34,35]` 副作用大的原因：它把几何上并不完全同质的 subspace 一起 remove，容易伤害正确答案 readout。
 - 后续 layer sweep 不应默认连续多层 late hook；更合理的是单层 `[35]`，或把 `[31,32,33]` 和 `[35]` 分开设计不同 strength/rank。
+
+# New Idea : derive subspace-generating layer and interfered layer
+新建一个derived文件夹，接下来代码和output等放到里面
+上次实验结果显示，31-33层的subspace方向比较一致，而且31-33层的readout-alignment的方向一致性最强，所以能否尝试在31-33层提取出subspace，在35层进行干预？
+
+## derived subspace q200 trial, 2026-05-07
+
+新增脚本：
+
+```text
+derived/run_derived_subspace_intervention.py
+```
+
+实验问题：
+
+```text
+能否把 subspace-generating layer 和 interfered layer 解耦？
+也就是：
+  从 31/32/33 或 31-33 提取 attack subspace
+  但实际 hook 时只在 layer 35 做 projection removal
+```
+
+数学形式：
+
+```text
+derive layers S = {31}, {32}, {33}, {31,32,33}
+target layer T = {35}
+
+For l in S:
+  ΔH_l = H_attack,l - H_base,l
+
+M_S = concat_l,t ΔH_l,t
+U_S = top-r right singular vectors of centered M_S
+
+At target layer 35:
+  h_35' = h_35 - alpha * U_S U_S^T h_35
+```
+
+对照组：
+
+```text
+derive [35] -> target [35]
+```
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  derived/run_derived_subspace_intervention.py \
+  --limit 650 \
+  --target-correct 200 \
+  --derive-layer-groups '31;32;33;31,32,33;35' \
+  --target-layers '35' \
+  --rank 2 \
+  --token-window 16 \
+  --calibration-trials 120 \
+  --alpha 0.25 \
+  --output-dir derived/outputs/derived_subspace_q200
+```
+
+运行规模：
+
+- source questions scanned: `550`
+- first-turn correct questions: `200`
+- attack trials: `1200`
+- baseline flip: `490/1200 = 40.83%`
+- rank: `2`
+- token_window: `16`
+- alpha: `0.25`
+- calibration_trials: `120`
+
+输出文件：
+
+```text
+derived/outputs/derived_subspace_q200/derived_report.md
+derived/outputs/derived_subspace_q200/derived_results.json
+derived/outputs/derived_subspace_q200/derived_results_partial.json
+derived/outputs/derived_subspace_q200/base_results.jsonl
+derived/outputs/derived_subspace_q200/baseline_attacks.jsonl
+derived/outputs/derived_subspace_q200/combos/*/summary.json
+derived/outputs/derived_subspace_q200/combos/*/intervened_attacks.jsonl
+```
+
+结果：
+
+| rank | derive layers | target layers | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | `[35]` | `[35]` | +2 | 2 | 0 | 99.50% | +0.0150 | 40.58% |
+| 2 | `[33]` | `[35]` | 0 | 1 | 1 | 99.58% | +0.0022 | 40.83% |
+| 3 | `[31]` | `[35]` | -1 | 0 | 1 | 99.50% | +0.0015 | 40.83% |
+| 4 | `[31,32,33]` | `[35]` | -1 | 0 | 1 | 99.50% | -0.0011 | 40.83% |
+| 5 | `[32]` | `[35]` | -1 | 0 | 1 | 99.50% | -0.0021 | 40.83% |
+
+Interpretation:
+
+- 这个新想法在当前设置下没有优于原始 `[35] -> [35]`。
+- 从 31/32/33 提取出的 subspace 放到 35 上几乎没有行为影响：最多 `[33] -> [35]` 只有 `wrong->correct=1` 和 `correct->wrong=1`，净收益为 0。
+- `[31,32,33] -> [35]` 也没有因为多层生成 subspace 而增强，结果是 `net_gain=-1`。
+- 对照 `[35] -> [35]` 复现了 q200 最优配置：`net_gain=+2`, `correct->wrong=0`。
+
+Mechanistic implication:
+
+- 虽然 31-33 的 readout alignment 和 layer-to-layer subspace similarity 很强，但它们的 subspace 不能直接搬到 layer 35 使用。
+- 这说明 subspace 可能不是完全 layer-invariant 的。31-33 更像 attack/social-pressure representation，35 更像 final readout steering。二者维度相同，但坐标语义已经经过后续 transformer block 变换，不能简单共用同一个 PCA basis。
+- 如果要继续这个方向，需要学习或估计一个 cross-layer transport map，而不是直接把 `U_31/32/33` 当作 `U_35` 使用。
+
+Next derived-layer ideas:
+
+1. 做 cross-layer transported subspace：
+
+```text
+fit linear map A_{33->35}: Δh_33 -> Δh_35
+U_35_from_33 = orth(A_{33->35} U_33)
+```
+
+2. 做 detector-executor 分离：
+
+```text
+31-33 只负责检测 attack pressure / wrong-readout alignment
+35 仍使用自己的 U_35 做实际 intervention
+```
+
+3. 做 low-alpha skip-layer multi-hook，而不是 subspace transfer：
+
+```text
+[33,35] or [31,33,35]
+每层使用自己的 U_l
+alpha <= 0.25
+rank <= 2
+```
+
+当前结论：直接 “derive from 31-33, interfere at 35” 不成立；更合理的是 “detect at 31-33, intervene at 35” 或学习跨层映射。
+
+## detector-executor clarification
+
+上面的 derived-subspace 实验并不是真正的 detector-executor 分离。它做的是：
+
+```text
+derive U from layer 31/32/33
+execute at layer 35 using the same U_31/32/33
+
+h_35' = h_35 - alpha * U_31 U_31^T h_35
+```
+
+它测试的是：
+
+```text
+subspace 能否跨层直接搬运
+```
+
+真正的 detector-executor 应该是：
+
+```text
+detector at earlier signal:
+  判断当前样本是否需要干预，或决定干预强度 g
+
+executor at layer 35:
+  始终使用 layer 35 自己的 U_35 做干预
+
+h_35' = h_35 - alpha * g * U_35 U_35^T h_35
+```
+
+区别：
+
+| scheme | 前层/检测信号做什么 | layer 35 用什么 subspace | 测试问题 |
+| --- | --- | --- | --- |
+| derived-subspace transfer | 生成惩罚矩阵 `U_31/32/33` | `U_31/32/33` | subspace 能不能跨层搬运 |
+| detector-executor | 生成 gate/score `g` | `U_35` | 能不能只在危险样本上触发 layer 35 干预 |
+
+最现实的第一版 detector 不依赖 `h_base`，直接用 attack prompt 当前 next-token option logits：
+
+```text
+score = logit(user_wrong) - logit(correct)
+gate = 1[score > tau]
+
+or continuous:
+gate = sigmoid(beta * (score - tau))
+```
+
+然后执行：
+
+```text
+h_35' = h_35 - alpha * gate * U_35 U_35^T h_35
+```
+
+预期：
+
+- 如果 gate 能识别真正危险样本，应减少 `correct->wrong`。
+- 如果 tau 太高，干预触发太少，收益会变弱。
+- 如果 tau 太低，退化成普通 always-on ARA。
+
+下一步实验：在 q200 上固定 executor：
+
+```text
+executor_layer = [35]
+U_35 from layer 35
+alpha = 0.25
+rank = 2
+token_window = 16
+```
+
+扫描 gate threshold：
+
+```text
+gate_margin_threshold = -2, -1, 0, 1, 2
+```
+
+并和 always-on `[35], alpha=0.25, rank=2, token_window=16` 对照。
+
+## detector-executor q200 trial, 2026-05-07
+
+新增脚本：
+
+```text
+derived/run_detector_executor_ara.py
+```
+
+Detector:
+
+```text
+score = logit(user_wrong) - logit(correct)
+gate = 1[score > threshold]
+```
+
+Executor:
+
+```text
+executor_layer = 35
+U_35 = rank-2 ARA subspace derived from layer 35
+h_35' = h_35 - alpha * gate * U_35 U_35^T h_35
+```
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  derived/run_detector_executor_ara.py \
+  --limit 650 \
+  --target-correct 200 \
+  --executor-layer 35 \
+  --rank 2 \
+  --token-window 16 \
+  --calibration-trials 120 \
+  --alpha 0.25 \
+  --thresholds=-4,-2,-1,0,1,2,4 \
+  --output-dir derived/outputs/detector_executor_q200
+```
+
+运行规模：
+
+- source questions scanned: `550`
+- first-turn correct questions: `200`
+- attack trials: `1200`
+- baseline flip: `490/1200 = 40.83%`
+- executor: `layer 35`
+- rank: `2`
+- token_window: `16`
+- alpha: `0.25`
+- calibration_trials: `120`
+
+输出文件：
+
+```text
+derived/outputs/detector_executor_q200/detector_executor_report.md
+derived/outputs/detector_executor_q200/detector_executor_results.json
+derived/outputs/detector_executor_q200/detector_executor_results_partial.json
+derived/outputs/detector_executor_q200/combos/*/summary.json
+derived/outputs/detector_executor_q200/combos/*/intervened_attacks.jsonl
+```
+
+结果：
+
+| rank | threshold | gate rate | net gain | wrong->correct | correct->wrong | valid rate | mean Δmargin | ARA flip |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | -4.00 | 43.00% | +2 | 2 | 0 | 99.58% | -0.1329 | 40.67% |
+| 2 | 1.00 | 39.25% | +1 | 1 | 0 | 99.58% | -0.1296 | 40.75% |
+| 3 | 0.00 | 39.92% | +1 | 1 | 0 | 99.58% | -0.1297 | 40.75% |
+| 4 | 2.00 | 38.17% | +1 | 1 | 0 | 99.58% | -0.1302 | 40.75% |
+| 5 | -1.00 | 40.83% | +1 | 1 | 0 | 99.58% | -0.1309 | 40.75% |
+| 6 | -2.00 | 41.25% | +1 | 1 | 0 | 99.58% | -0.1313 | 40.75% |
+| 7 | 4.00 | 36.50% | 0 | 0 | 0 | 99.58% | -0.1284 | 40.83% |
+
+Interpretation:
+
+- simple logit-gap detector 没有超过 always-on `[35], alpha=0.25, rank=2, token_window=16`。
+- 最好阈值 `-4` 得到 `net_gain=+2`，但 always-on 之前也是 `net_gain=+2`；区别是 gate rate 只有 `43%`，不是所有样本都干预。
+- 更严格阈值会降低 gate rate，但收益也下降到 `+1` 或 `0`。
+- 所有阈值都保持 `correct->wrong=0`，说明 gating 没有引入新的副作用，但也没有显著提高 `wrong->correct`。
+- `mean_delta_margin` 为负，说明这个 gate 选中的样本在 next-token margin 上并没有被稳定推向 correct；behavioral 小收益可能来自少数生成路径变化。
+
+Mechanistic implication:
+
+- `score = logit(wrong) - logit(correct)` 作为 detector 太粗糙。它主要识别“当前已经偏向 wrong”的样本，但这类样本可能已经太晚，低强度 ARA 难以改回来。
+- 这个结果不否定 detector-executor；它只说明 first-pass detector 不够好。
+- 下一版 detector 应该用 31-33 的 hidden/readout alignment 或 projection，而不是只用最终 option logit gap。
+
+Next detector-executor variants:
+
+1. hidden detector:
+
+```text
+score = projection(P_33 h_33) or ||P_33 h_33||
+gate = 1[score > tau]
+executor still uses U_35
+```
+
+2. readout-alignment detector:
+
+```text
+score = dot(d_syco_33, normalize(W_wrong - W_correct))
+```
+
+训练/评估时可用 `d_syco`; 推理时需要用 proxy detector 近似。
+
+3. soft gate:
+
+```text
+gate = sigmoid(beta * (score - tau))
+```
+
+避免 hard threshold 把大量 borderline 样本完全关掉。
+
+当前结论：detector-executor 的结构是合理的，但 simple logit-gap detector 没有带来比 always-on 更明显的收益。
