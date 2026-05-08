@@ -2124,3 +2124,91 @@ gate = sigmoid(beta * (score - tau))
 避免 hard threshold 把大量 borderline 样本完全关掉。
 
 当前结论：detector-executor 的结构是合理的，但 simple logit-gap detector 没有带来比 always-on 更明显的收益。
+
+## skip-layer q200 trial: [24,35], 2026-05-08
+
+动机：
+
+```text
+之前连续多层 late hook `[33,34,35]` 副作用很大；
+但还没有系统尝试非连续多层 hook。
+这里先试一个 skip-layer 组合 `[24,35]`：
+  layer 24: 较早的 margin turning point 附近
+  layer 35: q200 最稳 executor layer
+```
+
+运行命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=0 /home/hanruoshui/miniconda3/envs/llm_eval/bin/python \
+  scripts/run_rank_ara_hyperparameter_sweep.py \
+  --limit 650 \
+  --target-correct 200 \
+  --layer-groups '24,35' \
+  --alphas '0.25' \
+  --ranks '2' \
+  --token-windows '16' \
+  --default-alpha 0.25 \
+  --default-rank 2 \
+  --default-token-window 16 \
+  --calibration-trials 120 \
+  --output-dir outputs/rank_ara_q200_l24_35
+```
+
+Note:
+
+- 通用 sweep 脚本会在 layer/alpha/rank/token_window 四个 stage 重复同一配置。
+- 本次在第一轮 `[24,35]` 完整跑完后手动中断，避免重复跑同一个组合。
+- 有效结果已完整写入：
+
+```text
+outputs/rank_ara_q200_l24_35/l24_35_report.md
+outputs/rank_ara_q200_l24_35/sweep_results_partial.json
+outputs/rank_ara_q200_l24_35/combos/layers__L24-35__a0p25__r2__tw16/summary.json
+outputs/rank_ara_q200_l24_35/combos/layers__L24-35__a0p25__r2__tw16/intervened_attacks.jsonl
+```
+
+运行规模：
+
+- source questions scanned: `550`
+- first-turn correct questions: `200`
+- attack trials: `1200`
+- baseline flip: `490/1200 = 40.83%`
+- layers: `[24,35]`
+- alpha: `0.25`
+- rank: `2`
+- token_window: `16`
+- calibration_trials: `120`
+
+结果：
+
+| layers | alpha | rank | token_window | net gain | wrong->correct | correct->wrong | same wrong | same correct | valid rate | mean Δmargin | ARA flip |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `[24,35]` | 0.25 | 2 | 16 | +2 | 3 | 1 | 486 | 704 | 99.50% | +0.2581 | 40.58% |
+
+By attack:
+
+| attack | total | wrong->correct | correct->wrong | same wrong | same correct | net gain |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Doubt | 200 | 0 | 0 | 11 | 188 | 0 |
+| Trap | 200 | 0 | 0 | 15 | 184 | 0 |
+| Authority | 200 | 1 | 1 | 173 | 24 | 0 |
+| Gaslighting | 200 | 0 | 0 | 65 | 134 | 0 |
+| Majority | 200 | 0 | 0 | 199 | 0 | 0 |
+| Emotional | 200 | 2 | 0 | 23 | 174 | +2 |
+
+Comparison with current best `[35]`:
+
+| config | net gain | wrong->correct | correct->wrong | mean Δmargin | ARA flip |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `[35], alpha=0.25, rank=2, tw=16` | +2 | 2 | 0 | +0.0150 | 40.58% |
+| `[24,35], alpha=0.25, rank=2, tw=16` | +2 | 3 | 1 | +0.2581 | 40.58% |
+
+Interpretation:
+
+- `[24,35]` 没有比 `[35]` 更强，二者 `net_gain` 和 ARA flip 相同。
+- `[24,35]` 多修正了 1 个 wrong->correct，但也新增了 1 个 correct->wrong；因此净收益没有增加。
+- `[24,35]` 的 mean Δmargin 明显更高，说明 layer 24 对局部 next-token margin 有帮助，但这个 margin 改善没有稳定转化为最终答案改善。
+- 主要正收益来自 Emotional attack；Authority 同时出现一个修复和一个副作用。
+- 结论：skip-layer 多层干预是有信号的，但 `[24,35]` 还不是比 `[35]` 更好的默认方案。下一步如果继续 skip-layer，应扫更低 alpha，例如 `0.05, 0.10, 0.20`，看能否保留 `wrong->correct=3` 同时消除 `correct->wrong=1`。
+

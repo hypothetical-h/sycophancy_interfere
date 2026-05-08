@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="306" height="246" viewBox="0 0 306 246">
+<rect width="100%" height="100%" fill="#fbfbf8"/>
+<text x="24" y="32" font-family="monospace" font-size="18" fill="#111">Module 4: layer subspace similarity, Authority</text>
+<text x="156" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 156,68)">24</text>
+<text x="12" y="114" font-family="monospace" font-size="11" fill="#333">24</text>
+<text x="214" y="68" font-family="monospace" font-size="10" fill="#333" transform="rotate(-35 214,68)">35</text>
+<text x="12" y="172" font-family="monospace" font-size="11" fill="#333">35</text>
+<rect x="150" y="80" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="161" y="113" font-family="monospace" font-size="12" fill="#111">1.00</text>
+<rect x="208" y="80" width="56" height="56" fill="rgb(227,232,205)" stroke="#fff"/>
+<text x="219" y="113" font-family="monospace" font-size="12" fill="#111">0.18</text>
+<rect x="150" y="138" width="56" height="56" fill="rgb(227,232,205)" stroke="#fff"/>
+<text x="161" y="171" font-family="monospace" font-size="12" fill="#111">0.18</text>
+<rect x="208" y="138" width="56" height="56" fill="rgb(105,175,75)" stroke="#fff"/>
+<text x="219" y="171" font-family="monospace" font-size="12" fill="#111">1.00</text>
+</svg>
